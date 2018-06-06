@@ -177,6 +177,202 @@
 
 // 3. Explain how prototypal inheritance works
 
+// Both the code samples you demonstrated in your question make use of prototypal inheritance. 
+// In fact any object-oriented code you write in JavaScript is a paradigm of prototypal inheritance. 
+// JavaScript simply doesn't have classical inheritance. This should clear things up a bit:
+
+//                                    Inheritance
+//                                         |
+//                          +-----------------------------+
+//                          |                             |
+//                          v                             v
+//                     Prototypal                     Classical
+//                          |
+//          +------------------------------+
+//          |                              |
+//          v                              v
+// Prototypal Pattern             Constructor Pattern
+
+
+
+// As you can see prototypal inheritance and classical inheritance are two different paradigms 
+// of inheritance. Some languages like Self, Lua and JavaScript support prototypal inheritance. 
+// However most languages like C++, Java and C# support classical inheritance.
+
+// A Quick Overview of Object-Oriented Programming
+// Both prototypal inheritance and classical inheritance are object-oriented programming paradigms
+// (i.e. they deal with objects). Objects are simply abstractions which encapsulate the properties 
+// of a real world entity (i.e. they represent real word things in the program). This is known as abstraction.
+
+// Abstraction: The representation of real world things in computer programs.
+
+// Theoretically an abstraction is defined as "a general concept formed by extracting common features 
+// from specific examples". However for the sake of this explanation we're going to use the aforementioned 
+// definition instead.
+
+// Now some objects have a lot of things in common. For example a mud bike and a Harley Davidson have a 
+// lot in common.
+
+// A mud bike:
+
+// A mud bike. <image />
+
+// A Harley Davidson:
+
+// A Harley Davidson <image />
+
+// A mud bike and a Harley Davidson are both bikes. Hence a bike is a generalization of both a mud bike 
+// and a Harley Davidson.
+
+//                    Bike
+//                      |
+//     +---------------------------------+
+//     |                                 |
+//     v                                 v
+// Mud Bike                       Harley Davidson
+
+
+// In the above example the bike, the mud bike and the Harley Davidson are all abstractions. However 
+// the bike is a more general abstraction of the mud bike and the Harley Davidson (i.e. both the mud 
+// 	bike and the Harley Davidson are specific types of bikes).
+
+// Generalization: An abstraction of a more specific abstraction.
+
+// In object-oriented programming we create objects (which are abstractions of real world entities) 
+// and we use either classes or prototypes to create generalizations of these objects. Generalizations 
+// are created via inheritance. A bike is a generalization of a mud bike. Hence mud bikes inherit from bikes.
+
+// Classical Object-Oriented Programming
+// In classical object-oriented programming we have two types of abstractions: classes and objects. 
+// An object, as mentioned before, is an abstraction of a real world entity. A class on the other hand 
+// is an abstraction of an object or another class (i.e. it's a generalization). For example, consider:
+
+// +----------------------+----------------+---------------------------------------+
+// | Level of Abstraction | Name of Entity |                Comments               |
+// +----------------------+----------------+---------------------------------------+
+// | 0                    | John Doe       | Real World Entity.                    |
+// | 1                    | johnDoe        | Variable holding object.              |
+// | 2                    | Man            | Class of object johnDoe.              |
+// | 3                    | Human          | Superclass of class Man.              |
+// +----------------------+----------------+---------------------------------------+
+// As you can see in classical object-oriented programming languages objects are only abstractions 
+// (i.e. all objects have an abstraction level of 1) and classes are only generalizations 
+// (i.e. all classes have an abstraction level greater than 1).
+
+// Objects in classical object-oriented programming languages can only be created by instantiating classes:
+
+// class Human {
+//     // ...
+// }
+
+// class Man extends Human {
+//     // ...
+// }
+
+// Man johnDoe = new Man();
+// In summation in classical object-oriented programming languages objects are abstractions of 
+// real world entities and classes are generalizations (i.e. abstractions of either objects or other classes).
+
+// Hence as the level of abstraction increases entities become more general and as the level of 
+// abstraction decreases entities become more specific. In this sense the level of abstraction is 
+// analogous to a scale ranging from more specific entities to more general entities.
+
+// Prototypal Object-Oriented Programming
+// Prototypal object-oriented programming languages are much simpler than classical object-oriented 
+// programming languages because in prototypal object-oriented programming we only have one type of 
+// abstraction (i.e. objects). For example, consider:
+
+// +----------------------+----------------+---------------------------------------+
+// | Level of Abstraction | Name of Entity |                Comments               |
+// +----------------------+----------------+---------------------------------------+
+// | 0                    | John Doe       | Real World Entity.                    |
+// | 1                    | johnDoe        | Variable holding object.              |
+// | 2                    | man            | Prototype of object johnDoe.          |
+// | 3                    | human          | Prototype of object man.              |
+// +----------------------+----------------+---------------------------------------+
+// As you can see in prototypal object-oriented programming languages objects are abstractions of 
+// either real world entities (in which case they are simply called objects) or other objects 
+// (in which case they are called prototypes of those objects that they abstract). Hence a prototype 
+// is a generalization.
+
+// Objects in prototypal object-oriented programming languages may be created either ex-nihilo 
+// (i.e. out of nothing) or from another object (which becomes the prototype of the newly created object):
+
+// var human = {};
+// var man = Object.create(human);
+// var johnDoe = Object.create(man);
+
+// In my humble opinion prototypal object-oriented programming languages are more powerful than 
+// classical object-oriented programming languages because:
+
+// There is only one type of abstraction.
+// Generalizations are simply objects.
+// By now you must have realized the difference between classical inheritance and prototypal 
+// inheritance. Classical inheritance is limited to classes inheriting from other classes. However 
+// prototypal inheritance includes not only prototypes inheriting from other prototypes but also 
+// objects inheriting from prototypes.
+
+// Prototype-Class Isomorphism
+// You must have noticed that prototypes and classes are very similar. That's true. They are. 
+// In fact they are so similar that you can actually use prototypes to model classes:
+
+// function CLASS(base, body) {
+//     if (arguments.length < 2) body = base, base = Object.prototype;
+//     var prototype = Object.create(base, {new: {value: create}});
+//     return body.call(prototype, base), prototype;
+
+//     function create() {
+//         var self = Object.create(prototype);
+//         return prototype.hasOwnProperty("constructor") &&
+//             prototype.constructor.apply(self, arguments), self;
+//     }
+// }
+
+// Using the above CLASS function you can create prototypes that look like classes:
+
+// var Human = CLASS(function () {
+//     var milliseconds = 1
+//       , seconds      = 1000 * milliseconds
+//       , minutes      = 60 * seconds
+//       , hours        = 60 * minutes
+//       , days         = 24 * hours
+//       , years        = 365.2425 * days;
+
+//     this.constructor = function (name, sex, dob) {
+//         this.name = name;
+//         this.sex = sex;
+//         this.dob = dob;
+//     };
+
+//     this.age = function () {
+//         return Math.floor((new Date - this.dob) / years);
+//     };
+// });
+
+// var Man = CLASS(Human, function (Human) {
+//     this.constructor = function (name, dob) {
+//         Human.constructor.call(this, name, "male", dob);
+//         if (this.age() < 18) throw new Error(name + " is a boy, not a man!");
+//     };
+// });
+
+// var johnDoe = Man.new("John Doe", new Date(1970, 0, 1));
+// The reverse is not true however (i.e. you can't use classes to model prototypes). This is because 
+// prototypes are objects but classes are not objects. They are an entirely different type of abstraction.
+
+// Conclusion
+// In summation we learned that an abstraction is a "a general concept formed by extracting common 
+// features from specific examples" and that generalization is "an abstraction of a more specific 
+// abstraction". We also learned about the differences between prototypal and classical inheritance 
+// and how both of them are two faces of the same coin.
+
+// On a parting note I would like to remark that there are two patterns of prototypal inheritance: 
+// the prototypal pattern and the constructor pattern. The prototypal pattern is the canonical 
+// pattern of prototypal inheritance whereas the constructor pattern is used to make prototypal 
+// inheritance look more like classical inheritance. Personally I prefer the prototypal pattern.
+
+// P.S. I'm the guy who wrote the blog post "Why Prototypal Inheritance Matters" and answered 
+// the question "Benefits of prototypal inheritance over classical?". My answer is the accepted answer.
 
 
 
@@ -184,6 +380,46 @@
 
 
 // 4. What do you think of AMD vs CommonJS?
+
+
+
+
+
+
+
+
+
+// Asynchronous Module Definition (AMD)
+
+
+// AMD was born out of a group of developers that were displeased with the direction adopted by CommonJS. 
+// In fact, AMD was split from CommonJS early in its development. The main difference between AMD and 
+// CommonJS lies in its support for asynchronous module loading.
+
+// Asynchronous loading is made possible by using JavaScript's traditional closure idiom: a function is 
+// called when the requested modules are finished loading. Module definitions and importing a module is 
+// carried by the same function: when a module is defined its dependencies are made explicit. An AMD 
+// loader can therefore have a complete picture of the dependency graph for a given project at runtime. 
+// Libraries that do not depend on each other for loading can thus be loaded at the same time. This is 
+// particularly important for browsers, where startup times are essential to a good user experience.
+
+// PROS
+// Asynchronous loading (better startup times).
+// Circular dependencies are supported.
+// Compatibility for require and exports.
+// Dependency management fully integrated.
+// Modules can be split in multiple files if necessary.
+// Constructor functions are supported.
+// Plugin support (custom loading steps).
+
+// CONS
+// Slightly more complex syntactically.
+// Loader libraries are required unless transpiled.
+// Hard to analyze for static code analyzers.
+
+
+
+
 
 
 
@@ -544,7 +780,27 @@
 
 
 
+// How do you organize your code? (module pattern, classical inheritance?)
+// There are several options in implementing Module Pattern. An option I mostly use is 
+// Object Literal Notation for encapsulating and organizing my code, but upon further readings, 
+// Module Pattern using Anonymous Closures, Global Import, and Module Export have sparked my 
+// interest as it provides more features for private and public var/methods. It still uses 
+// object literal but as to return values from the scoping function.
 
+// In JavaScript, the Module pattern is used to further emulate the concept of classes in 
+// such a way that we’re able to include both public/private methods and variables inside a 
+// single object, thus shielding particular parts from the global scope.
+// - Addy Osmani, Learning Javascript Design Patterns
+
+
+// There are popular javascript module framework that specifically implemented Module Pattern such 
+// as Dojo, ExtJS, YUI, and jQuery. Good to know if your new to learning Javascript concepts and have 
+// heard of these technologies before those popular MVC frameworks (Angular.js, Ember.js, Backbone.js) emerged.
+
+// Another implementation of module pattern popularized Christian Heilmann (which I think is 
+// 	pretty clean and neat) is The Revealing Module Pattern. It’s pretty much the same with the 
+// standard Module Pattern except it uses the return object literal properties as references to 
+// variables and functions from the scoping function to export variables and methods.
 
 
 
