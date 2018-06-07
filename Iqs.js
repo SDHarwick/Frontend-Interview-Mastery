@@ -382,7 +382,7 @@
 // 4. What do you think of AMD vs CommonJS?
 
 
-
+W EMCA6 it don matta
 
 
 
@@ -438,8 +438,8 @@
 
 // Immediately-invoked function expressions may be written in a number of different ways. A common convention 
 // is to enclose the function expression – and optionally its invocation operator – with the grouping operator, 
-// in parentheses, to tell the parser explicitly to expect an expression. Otherwise, in most situations, when the 
-// parser encounters the function keyword, it treats it as a function declaration (statement), 
+// in parentheses, to tell the parser explicitly to expect an expression. Otherwise, in most situations,
+// when the parser encounters the function keyword, it treats it as a function declaration (statement), 
 // and not as a function expression.
 
 // (function () { /* ... */ })();
@@ -1013,7 +1013,163 @@
 
 // 21. Explain "hoisting".
 
+// Hoisting is when a JS declaration is lifted (“hoisted”) to the top of it’s scope by the JS 
+// interpreter. What this really means is that a variable or function isn’t necessarily declared 
+// where you think it is. Understandably, this can cause problems. Variables and functions are 
+// hoisted differently, as we'll see below.
 
+// Hoisting variables
+// We'll start with an example:
+
+
+// // Code saved in file:
+
+// function containsHoisting() {
+//     console.log(hoistedVariable);
+//     var hoistedVariable = "I was hoisted!";
+// }
+
+// containsHoisting(); // logs undefined
+
+
+// Wait, how did hoistedVariable get to be undefined? Surely it should be undeclared since we 
+// haven’t hit var hoistedVariable yet.
+
+// It’s because of hoisting! You see, although I wrote the code in the example above, the JS 
+// interpreter changes it to this:
+
+
+// // What the interpreter changed it to:
+
+// function containsHoisting() {
+//     var hoistedVariable; // <-- this line here!
+//     console.log(hoistedVariable);
+//     hoistedVariable = "I was hoisted!";
+// }
+
+
+// That new line is hoistedVariable getting hoisted up to the top of it’s scope. So it’s now 
+// declared, but not defined.
+
+// Here’s a more complex example (inspired by Adequately Good)
+
+
+// var hoistedVariable = 1;
+
+// function scopingFunction() {
+//     if (!hoistedVariable) {
+//         var hoistedVariable = 10;
+//     }
+//     return hoistedVariable;
+// }
+
+// scopingFunction(); // returns 10
+
+
+// What?! How can it return 10?
+
+// Tangent about scopes
+// I was surprised about this myself until I understood JS scoping better, here’s how it breaks down:
+
+// In Javascript scopes are defined at function level. Many other languages define scope at 
+// a block level (as in an if block or for loop). This is an important difference to remember.
+
+// Thus...
+
+// Back to the main event
+// The code above gets rewritten in the JS interpreter to look like this:
+
+
+// var hoistedVariable = 1;
+
+// function scopingFunction() {
+//     var hoistedVariable; // <-- this line here!
+//     if (!hoistedVariable) {
+//         hoistedVariable = 10;
+//     }
+//     return hoistedVariable;
+// }
+
+// scopingFunction(); // returns 10
+
+
+// Note that the global hoistedVariable gets completely overwritten by the local hoistedVariable 
+// as declared in scopingFunction. So at the point of the if conditional hoistedVariable is 
+// undefined and not 1.
+
+// Function hoisting
+// Hoisting functions works differently than variables. Since a function is declared and defined 
+// at the same time the function definition is hoisted along with the function name.
+
+// Since examples make things clearer:
+
+
+// function containingFunction() {
+//     var hoistedVariable = 2 + 2;
+//     function hoistedFunction() {
+//         return hoistedVariable;
+//     }
+//     return hoistedFunction();
+// }
+// containingFunction() // returns 4
+
+
+// Hopefully that example wasn’t surprising. But just to better understand what’s going on, here’s 
+// how the JS interpreter rewrote things:
+
+
+// function containingFunction() {
+//     // this is the hoisted section
+//     var hoistedVariable;
+//     function hoistedFunction() {
+//         return hoistedVariable;
+//     }
+
+//     // here's the rest of the code
+//     hoistedVariable = 2 + 2;
+//     return hoistedFunction();
+// }
+// containingFunction() // returns 4
+
+
+// Notice that the entire hoistedFunction gets moved up, while only the declaration for the 
+// hoistedVariable is hoisted.
+
+// Let’s try with a more complicated example:
+
+
+// function containingFunction() {
+//     var hoisted = "I'm the variable";
+//     function hoisted() {
+//         return "I'm the function";
+//     }
+//     return hoisted(); // results in a TypeError
+// }
+// containingFunction()
+
+
+// But wait, the hoisted function is defined right there, what gives?
+
+// Because functions are hoisted after variables, naming conflicts can happen. Again, let’s 
+// look at what the JS interpreter wrote for this code
+
+
+// function containingFunction() {
+//     // hoisted section
+//     var hoisted;
+//     function hoisted() {
+//         return "I'm the function";
+//     }
+
+//     // rest of the code
+//     hoisted = "I'm the variable";
+//     return hoisted();
+// }
+// containingFunction() // results in a TypeError
+
+// As you can see, the function definition for hoisted is overwritten by the variable 
+// definition ("I'm the variable") which appears lower down in the interpreter’s version 
+// of the code. Yet another reason why good names are important!
 
 
 
@@ -1111,6 +1267,52 @@
 
 // 24. Why is extending built-in JavaScript objects not a good idea?
 
+// From: http://lucybain.com/blog/2014/js-extending-built-in-objects/
+
+// What is “extending an object”?
+
+// When you add functionality to an object using the prototype. An example looks like this:
+
+
+// Array.prototype.first = function(){
+//     return this[0];
+// }
+
+// var temp = [1, 2, 3];
+// temp.first(); // returns 1
+// At first glance, this seems like such an awesome feature. Want the third element from an array? 
+// Extend Array! Want strings to have a titleize method? Extend String! Want alphabetisedProperties 
+// available for objects? Extend Object!
+
+// Why is this a bad thing?
+
+// It depends on who you ask. This is one of those “JS standards” - unlike most of the questions 
+// that have a clear answer, this one has a bit more opinion.
+
+// The main argument against doing this is: if, in future, a browser decides to implement its own 
+// version of your method, your method might get overridden (silently) and the browser’s 
+// implementation (which is probably different from yours) would take over. So not extending 
+// in the first place is future proofing your code.
+
+// On the flip side, if you decide to overwrite the browsers definition, any future developer 
+// working on your code won’t know about the change. They'll have a harder time getting 
+// up to speed.
+
+// Generally it’s safer to move your particular changes into a library 
+// (as with underscore.js). That way your particular methods are clearly marked and 
+// there’s no chance of conflict.
+
+
+
+// From: http://rlynjb.github.io/wandrr/JS-Interview-Question-Why-is-extending-built-in-JavaScript-objects-not-a-good-idea
+
+// Modifying the behaviour of current built-in JS objects is not a good practice as it breaks 
+// its default functionality and it will break your code using that specific built-in JS object 
+// method or property.
+
+
+
+
 
 
 
@@ -1122,15 +1324,19 @@
 
 // 25. Difference between document load event and document DOMContentLoaded event?
 
+// From: https://stackoverflow.com/questions/2414750/difference-between-domcontentloaded-and-load-events
+
+// The DOMContentLoaded event fires when parsing of the current page is complete; the 
+// load event fires when all files have finished loading from all resources, including 
+// ads and images. DOMContentLoaded is a great event to use to hookup UI functionality 
+// to complex web pages.
 
 
 
 
-
-
-
-
-
+// The DOMContentLoaded event is fired when the document has been completely loaded and 
+// parsed, without waiting for stylesheets, images, and subframes to finish loading (the 
+// load event can be used to detect a fully-loaded page).
 
 
 //  Loading a script asynchronously doesn’t block the DOMContentLoaded event.
@@ -1142,7 +1348,43 @@
 
 
 
+
+
+
+
 // 26. What is the difference between `==` and `===`?
+
+
+// From: https://stackoverflow.com/questions/523643/difference-between-and-in-javascript?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+
+// === and !== are strict comparison operators:
+
+// JavaScript has both strict and type-converting equality comparison. For strict equality the objects 
+// being compared must have the same type and:
+
+// Two strings are strictly equal when they have the same sequence of characters, same length, and same 
+// characters in corresponding positions.
+
+// Two numbers are strictly equal when they are numerically equal (have the same number value). NaN is 
+// not equal to anything, including NaN. Positive and negative zeros are equal to one another.
+
+// Two Boolean operands are strictly equal if both are true or both are false.
+
+// Two objects are strictly equal if they refer to the same Object.
+
+// Null and Undefined types are == (but not ===). [I.e. (Null==Undefined) is true 
+// but (Null===Undefined) is false]
+
+// 0 == false   // true
+// 0 === false  // false, because they are of a different type
+// 1 == "1"     // true, automatic type conversion for value only
+// 1 === "1"    // false, because they are of a different type
+// null == undefined // true
+// null === undefined // false
+// '0' == false // true
+// '0' === false // false
+
+
 
 
 
@@ -1154,6 +1396,9 @@
 
 
 //  27. Explain the same-origin policy with regards to JavaScript.
+
+
+
 
 
 
@@ -1176,10 +1421,19 @@
 
 
 
+
+
+
 // 29. Why is it called a Ternary operator, what does the word "Ternary" indicate?
 
+// A unary operand accepts one parameter, e.g. `-1`, where `-` is the operand, and `1` is the parameter.
 
-// Because it requires three operands.
+// A binary operand accepts two parameters, e.g. `2 + 3`, where `+` is the operand, and `2` and `3` are the parameters.
+
+// A ternary operand accepts three parameters.
+
+// `conditional ? truethy_block : falsey_block`
+
 
 
 
@@ -1191,6 +1445,131 @@
 
 // 30. What is `"use strict"`;? what are the advantages and disadvantages to using it?
 
+// From: http://lucybain.com/blog/2014/js-use-strict/
+
+// If you put "use strict"; at the top of your code (or function), then the JS is evaluated in 
+// strict mode. Strict mode throws more errors and disables some features in an effort to make your 
+// code more robust, readable, and accurate.
+
+// Advantages
+
+// Taken from John Resig:
+
+// Strict mode helps out in a couple ways:
+
+// It catches some common coding bloopers, throwing exceptions.
+// It prevents, or throws errors, when relatively “unsafe” actions are taken (such as gaining access 
+// to the global object).
+// It disables features that are confusing or poorly thought out.
+// Sounds great! I've been reading JavaScript: the Good Parts, and it seems there are a number 
+// of “features that are confusing or poorly thought out.” I'll take anything that helps me avoid them!
+
+// Disadvantages
+
+// I had a harder time finding why people don’t like strict mode. The best explanation I found was 
+// when code mixed strict and “normal” modes. If a developer used a library that was in strict mode, 
+// but the developer was used to working in normal mode, they might call some actions on the library 
+// that wouldn’t work as expected. Worse, since the developer is in normal mode, they don’t have the 
+// advantages of extra errors being thrown, so the error might fail silently.
+
+// Also, as listed above, strict mode stops you from doing certain things. People generally think 
+// that you shouldn’t use those things in the first place, but some developers don’t like the 
+// constraint and want to use all the features of the language
+
+
+
+// From: https://johnresig.com/blog/ecmascript-5-strict-mode-json-and-more/
+
+// So what changes when you put a script into strict mode? A number of things.
+
+// Variables and Properties
+
+// An attempt to assign foo = "bar"; where ‘foo’ hasn’t been defined will fail. Previously it would 
+// assign the value to the foo property of the global object (e.g.  window.foo), now it just throws 
+// an exception. This is definitely going to catch some annoying bugs.
+
+// Any attempts to write to a property whose writable attribute is set to false, delete a property 
+// whose configurable attribute is set to false, or add a property to an object whose extensible 
+// attribute is set to false will result in an error (these attributes were discussed previously). 
+// Traditionally no error will be thrown when any of these actions are attempted, 
+// it will just fail silently.
+
+// Deleting a variable, a function, or an argument will result in an error.
+
+// var foo = "test";
+// function test(){}
+ 
+// delete foo; // Error
+// delete test; // Error
+ 
+// function test2(arg) {
+//     delete arg; // Error
+// }
+// Defining a property more than once in an object literal will cause an exception to be thrown
+
+// // Error
+// { foo: true, foo: false }
+// eval
+
+// Virtually any attempt to use the name ‘eval’ is prohibited – as is the ability to assign 
+// the eval function to a variable or a property of an object.
+
+// // All generate errors...
+// obj.eval = ...
+// obj.foo = eval;
+// var eval = ...;
+// for ( var eval in ... ) {}
+// function eval(){}
+// function test(eval){}
+// function(eval){}
+// new Function("eval")
+// Additionally, attempts to introduce new variables through an eval will be blocked.
+
+// eval("var a = false;");
+// print( typeof a ); // undefined
+// Functions
+
+// Attempting to overwrite the arguments object will result in an error:
+// arguments = [...]; // not allowed
+
+// Defining identically-named arguments will result in an error  function( foo, foo ) {}.
+
+// Access to arguments.caller and arguments.callee now throw an exception. Thus any anonymous 
+// functions that you want to reference will need to be named, like so:
+
+// setTimeout(function later(){
+//   // do stuff...
+//   setTimeout( later, 1000 );
+// }, 1000 );
+// The arguments and caller properties of other functions no longer exist – and the ability to 
+// define them is prohibited.
+
+// function test(){
+//   function inner(){
+//     // Don't exist, either
+//     test.arguments = ...; // Error
+//     inner.caller = ...; // Error
+//   }
+// }
+// Finally, a long-standing (and very annoying) bug has been resolved: Cases where null or 
+// undefined is coerced into becoming the global object. Strict mode now prevents this from 
+// happening and throws an exception instead.
+
+// (function(){ ... }).call( null ); // Exception
+// with(){}
+
+// with(){} statements are dead when strict mode is enabled – in fact it even appears as a 
+// syntax error. While the feature was certainly mis-understood and possibly mis-used I’m not 
+// convinced that it’s enough to be stricken from the record.
+
+// The changes made in ECMAScript 5 strict mode are certainly varied (ranging from imposing 
+// 	stylistic preferences, like removing with statements, to fixing legitimately bad language 
+// 	bugs, like the ability to redefine properties in object literals). It’ll be interesting to 
+// see how people begin to adopt these points and how it’ll change JavaScript development.
+
+// All that being said, I’m fairly certain that jQuery is ES5-Strict compatible right now. Once 
+// an implementation of the language is made available (so that that premise may be tested) 
+// I’ll happily switch jQuery over to working exclusively in strict mode.
 
 
 
