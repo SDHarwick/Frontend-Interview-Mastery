@@ -382,7 +382,7 @@
 // 4. What do you think of AMD vs CommonJS?
 
 
-W EMCA6 it don matta
+// W EMCA6 it don matta
 
 
 
@@ -838,6 +838,162 @@ W EMCA6 it don matta
 
 // 13. Difference between: `function Person(){}`, `var person = Person()`, and `var person = new Person()`?
 
+// From: https://stackoverflow.com/questions/5142286/two-functions-with-the-same-name-in-javascript-how-can-this-work/5142335#5142335
+
+// JavaScript has two different but related things: Function declarations, and function expressions. 
+// They happen at different times in the parsing cycle and have different effects.
+
+// This is a function declaration:
+
+// function foo() {
+//     // ...
+// }
+// Function declarations are processed upon entry into the enclosing scope, before any step-by-step 
+// code is executed.
+
+// This is a function expression (specifically, an anonymous one):
+
+// var foo = function() {
+//     // ...
+// };
+// Function expressions are processed as part of the step-by-step code, at the point where they 
+// appear (just like any other expression).
+
+// Your quoted code is using a named function expression, which look like this:
+
+// var x = function foo() {
+//     // ...
+// };
+
+// (In your case it's within an object literal, so it's on the right-hand side of an : instead of 
+// an =, but it's still a named function expression.)
+
+// That's perfectly valid, ignoring implementation bugs (more in a moment). It creates a function with 
+// the name foo, doesn't put foo in the enclosing scope, and then assigns that function to the x variable 
+// (all of this happening when the expression is encountered in the step-by-step code). When I say it 
+// doesn't put foo in the enclosing scope, I mean exactly that:
+
+// var x = function foo() {
+//     alert(typeof foo); // alerts "function" (in compliant implementations)
+// };
+// alert(typeof foo);     // alerts "undefined" (in compliant implementations)
+
+// Note how that's different from the way function declarations work (where the function's name is 
+// added to the enclosing scope).
+
+// Named function expressions work on compliant implementations. Historically, there were bugs in 
+// implementations (early Safari, IE8 and earlier). Modern implementations get them right, including 
+// IE9 and up. (More here: Double take and here: Named function expressions demystified.)
+
+// So, in this example the me variable should not be corectly resolved from inside the methods
+
+// Actually, it should be. A function's true name (the symbol between function and the opening 
+// parenthesis) is always in-scope within the function (whether the function is from a declaration or 
+// a named function expression).
+
+
+
+
+
+
+
+
+// From https://stackoverflow.com/questions/5403121/whats-the-difference-between-function-foo-and-foo-function?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+
+
+// difference between function foo(){} and foo = function(){}? 
+
+
+
+// No, they're not the same, although they do both result in a function you can call via the symbol foo. 
+// One is a function declaration, the other is a function expression. They are evaluated at different 
+// times, have different effects on the scope in which they're defined, and are legal in different places.
+
+// Quoting my answer to this other question here (edited a bit for relevance), in case the other question 
+// were ever removed for some reason (and to save people following the link):
+
+// JavaScript has two different but related things: Function declarations, and function expressions. 
+// There are marked differences between them:
+
+// This is a function declaration:
+
+// function foo() {
+//     // ...
+// }
+// Function declarations are evaluated upon entry into the enclosing scope, before any step-by-step 
+// code is executed. The function's name (foo) is added to the enclosing scope (technically, the 
+// 	variable object for the execution context the function is defined in).
+
+// This is a function expression (specifically, an anonymous one, like your quoted code):
+
+// var foo = function() {
+//     // ...
+// };
+// Function expressions are evaluated as part of the step-by-step code, at the point where they 
+// appear (just like any other expression). That one creates a function with no name, which it 
+// assigns to the foo variable.
+
+// Function expressions can also be named rather than anonymous. A named one looks like this:
+
+// var x = function foo() {  // Valid, but don't do it; see details below 
+//     // ...
+// };
+// A named function expression should be valid, according to the spec. It should create a function 
+// with the name foo, but not put foo in the enclosing scope, and then assign that function to the 
+// x variable (all of this happening when the expression is encountered in the step-by-step code). 
+// When I say it shouldn't put foo in the enclosing scope, I mean exactly that:
+
+// var x = function foo() {
+//     alert(typeof foo); // alerts "function" (in compliant implementations)
+// };
+// alert(typeof foo);     // alerts "undefined" (in compliant implementations)
+// Note how that's different from the way function declarations work (where the function's name is 
+// added to the enclosing scope).
+
+// Named function expressions work on compliant implementations, but there used to be several bugs in 
+// implementations in the wild, most especially Internet Explorer 8 and earlier (and some early 
+// versions of Safari). IE8 processes a named function expresssion twice: First as a function 
+// declaration (upon entry into the execution context), and then later as a function expression, 
+// generating two distinct functions in the process. (Really.)
+
+
+
+
+
+// From: https://medium.com/@manjuladube/difference-between-var-a-foo-var-b-new-foo-812194ad12ee
+
+
+// Difference between var a = foo() & var a= new foo()
+// Lets suppose I have a constructor function:
+
+// function foo() {
+//    console.log("manjula");
+// }
+
+
+// Code:
+
+// var a = foo();
+// //a will be undefined 
+// Output will be manjula
+
+
+// The above Executes the function foo() and variable a will always hold a value that is returned 
+// from the function foo
+
+// var a = new foo();
+// //a will be foo {}
+// Output will be manjula
+
+
+// Creates an object using function a() as a constructor and will assign it to variable a. Since 
+// the output will be same as above. In the above code It calls the function foo and outputs 
+// “manjula” with ‘this’ being pointed to the new object ‘a’ that we just created above.
+
+
+
+
+
 
 
 
@@ -948,6 +1104,82 @@ W EMCA6 it don matta
 
 
 // 16. What's the difference between feature detection, feature inference, and using the UA string?
+
+// From: http://lucybain.com/blog/2014/feature-detection-vs-inference/
+
+
+
+// What is feature detection?
+
+// When you check if a certain feature exists, that’s feature detection.
+
+// We need to write code that checks if features exist in JS since different browsers have different 
+// implementations, something like this:
+
+
+// var text;
+// if(typeof(Text) === "function"){
+//     text = new Text('Oh, how quick that fox was!');
+// } else {
+//     text = 'Oh, how quick that fox was!';
+// }
+
+
+// That means you can be confident you've covered all of your bases with different browser implementations.
+
+// What is feature inference?
+
+// When you make an assumption that because one feature is present (or not) another one will also be 
+// present (or not). (And you know what people say about when you assume something...)
+
+// The general thought process goes like this:
+
+// Chrome implements the Text function. I also know Chrome doesn’t have applyElement like IE does. 
+// So I'll write code like...
+
+
+// if(typeof applyElement != 'undefined') {
+//     // now I know I'm not in IE, I'll just assume Text is available
+//     text = new Text('Oh, how quick that fox was!');
+// }
+
+
+// But oops! Someone looked at that code in Firefox which doesn’t implement applyElement or Text! 
+// They got an error :(
+
+// So that’s the problem. Since you're not checking for the feature you're using you're more 
+// likely to have inconsistencies. Also, if in the future one of the browsers changes what they 
+// implement all your assumptions will be inacurate.
+
+// So yeah, it’s bad.
+
+// What is the UA string?
+
+// “UA” stands for user agent, which means the browser (and a whole lot of other stuff). Mine looks like this:
+
+// Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71
+
+
+// (You can find your user string at whatsmyuseragent.com.)
+
+// But you can see in there (at the end) it says what browser I’m on. So it would be possible to 
+// check for a specific version of Chrome by “sniffing” the user agent string. This is generally 
+// considered bad practice (but seems to be slightly better practice than feature inference).
+
+// Just like with feature inference, if you use the UA string you're making an assumption about 
+// how the string will be written, what changes are likely to happen in this particular version, 
+// and that your code will be able to handle any future changes.
+
+// TL;DR
+
+// Use feature detection if you're working with a feature that isn’t available across all browsers. 
+// When the browsers upgrade your code will be able to take advantage of the upgrade and your code 
+// will still work.
+
+
+
+
+
 
 
 
@@ -1272,10 +1504,158 @@ W EMCA6 it don matta
 
 
 
-
-
-
 // 19. Explain how JSONP works (and how it's not really Ajax).
+
+// From: https://schier.co/blog/2013/09/30/how-jsonp-works.html
+
+// The Wikipedia Definition of JSONP is as follows:
+
+// a communication technique used in JavaScript programs which run in Web browsers. It provides a method 
+// to request data from a server in a different domain, something prohibited by typical web browsers 
+// because of the same origin policy.
+
+// The Problem That JSONP Fixes
+// The typical AJAX request using the JQuery library looks like this:
+
+// The problem comes when you try to change the URL to point to a different domain such as 
+// http://otherdomain.com/users/billy. The reason this fails is because there are security implications 
+// that come with making requests to different origins. I won’t bore you with specifics, but you can 
+// read more on the same-origin policy Wikipedia page.
+
+// How JSONP Works
+// While it is not possible to make a typical AJAX request to a different origin, it is possible to 
+// include a <script> from a different origin. Using this method, JSONP is able to work around the 
+// same-origin policy. The way a typical JSONP call works is like this:
+
+// create a new <script> tag using window.createElement()
+// set the src attribute to the desired JSONP endpoint
+// add the <script> to the <head> of the DOM
+// once loaded, the script passes data to a local callback function
+// The key difference between a JSON response and a JSONP response is the callback function. A 
+// regular AJAX endpoint would simply respond with a string of JSON like this:
+
+// A JSONP response, on the other hand, is actually an executable script that calls a designated 
+// JSONP callback function, passing a JSON string as a parameter. The typical JSONP response looks 
+// something like this:
+
+// Notice that this is valid JavaScript code. The way this JSONP endpoint would be called would look like this:
+
+// So once the new script is appended to the DOM, loaded and executed, it will call the callback 
+// function that you defined with the data that you requested. Pretty easy right? It’s only a couple 
+// more lines of code than a regular AJAX request. You probably thought that JSONP was some magical and 
+// complicated thing that JQuery abstracted away (I know I did).
+
+// Limitations and Conclusions of JSONP
+// While JSONP seems like a perfect solution to get around the same-origin policy, there is one caveat. 
+// Since a JSONP call is made by the inclusion of a script tag, requests are restricted to the HTTP 
+// GET method. There is no way to do a PUT or POST request with JSONP, which is limiting to say the least.
+
+// So while JSONP is great for calling read-only services such as weather and news APIs, it can not 
+// be used for much else. There are a few ways to get around the same-origin policy but I’ll save 
+// those for another tutorial.
+
+
+
+
+
+
+
+
+
+
+// From: http://lucybain.com/blog/2015/how-does-jsonp-work/
+
+// Let’s start smaller: What does JSONP stand for?
+
+// JavaScript Object Notation with Padding
+
+// Hopefully you already know about the JSON part, if not check out this Stackoverflow answer. Go 
+// ahead, I'll wait :)
+
+// We'll talk about the padding part in a minute.
+
+// What problem does it solve?
+
+// Browsers try to be security conscious. They don’t let your JS talk to just any old server (see 
+// Cross Site Scripting). When you make AJAX requests, you can only query your server, not anyone 
+// else’s. This is a problem if you want to get data from another server (perhaps see a stream of 
+// Tweets). The browsers will not let you make an AJAX call to another server, so you're stuck.
+
+// Ok, tell me a bit about JSONP
+
+// Well, browsers have a caveat. You aren’t allowed to call other servers from your JS, but you 
+// are allowed to include a script from another server. You probably already do this with jQuery. 
+// Most people include a script tag to get jQuery hosted from Google rather than hosting it 
+// themselves. Something like this:
+
+
+// <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+// Notice that the domain is ajax.googleapis.com not your-awesome-site.com. Browsers allow this 
+// kind of code sharing, but direct calls to an API from JS.
+
+// So way back in 2005 someone had the clever idea to take advantage of this caveat. Instead of 
+// calling an API directly (which browsers don’t allow) you can call it via a script tag (which 
+// is totally legit).
+
+// So how does it work?
+
+// Create a function in the global space to handle the JSON returned from the API. It doesn’t 
+// have to do much, just enough so you can see what you're getting:
+
+
+// function myCallbackFunction(data) {
+//   console.log(data);
+// }
+
+// Next, add a script tag to your page which calls the API and passes it an additional parameter. 
+// Something like this:
+
+
+// <script src="http://cool-stuff.com/api.json?callback=myCallbackFunction"></script>
+
+// Notice the additional parameter? It’s typically called callback, but not always, check the 
+// docs for your particular API. Also note the callback parameter’s value. It’s the same as the 
+// function we defined earlier. This is crucial! If those names don’t match up you won’t get your data.
+
+// An API that’s set up to handle JSONP knows to look for that special parameter. If it’s there, 
+// the response isn’t just JSON, but the JSON wrapped (Padded) with the name of the callback. So 
+// for us, the API would return:
+
+
+// myCallbackFunction({'awesome': 'data'});
+
+// Since the API returns to a script tag the JS is immediately executed. So myCallbackFunction 
+// gets called. We defined this function earlier, so we'll have {'awesome': 'data'} logged to the console!
+
+// Phew! Way to get around some security issues!
+
+// A few things to note:
+
+// Generally you don’t write the script tag yourself. You can get jQuery to do that for you :) 
+// To make the same call as we did previously you can just use:
+
+
+// $.ajax({
+//   url: 'http://cool-stuff.com/api.json',
+//   dataType: 'jsonp',
+//   success: function(data) {
+//     console.log(data);
+//   }
+// });
+
+// Safety First! There’s a reason browsers don’t like you talking to other servers - you never 
+// know what those servers will send back! Use good data validation, even if the data is “safe.”
+
+// You can only use JSONP for get requests. You can use normal AJAX to do post and delete and 
+// all data manipulations, but you cannot do this with JSONP. The practical reason for this is 
+// that HTML tags only ever get information, they can’t do anything else (think image tags, 
+// links for style sheets, and script tags). The handy reason is that if you owned the API 
+// you almost certainly would not want randoms from the internet updating your data.
+
+
+
+
 
 
 
