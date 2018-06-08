@@ -2071,9 +2071,31 @@
 
 //  27. Explain the same-origin policy with regards to JavaScript.
 
+// From: http://lucybain.com/blog/2014/same-origin-policy/
 
 
+// The same-origin policy helps prevent malicious attacks by stopping code from another site executing on 
+// your site. An attacks like this is known as a Cross Site Scripting attack.
 
+// How does JS decide if it’s a “same” site?
+
+// The “origin” is the same if three things are the same: the protocol (http vs. https), the domain 
+// (subdomain.yoursite.com vs. yoursite.com vs. google.com), and the port (:80 vs. :4567). If all 
+// three of these line up, then JS views the sites as the same, and code is executed. If any of them 
+// are different then the code is marked as potentially malicious and is not run.
+
+// Hmmm, if I own “subdomain.yoursite.com” and “yoursite.com” I might want to share resources. This 
+// same-origin policy could be really annoying!
+
+// It’s possible to work around the subdomain problem. You can change the domain of a page, so it 
+// can access it’s parent’s resources:
+
+// // in the code on subdomain.yoursite.com
+// document.domain = "yoursite.com";
+// There are a couple other pieces to remember about changing the domain (mostly about the port). 
+
+// You can read about them here.
+// https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy#Changing_origin
 
 
 
@@ -2424,6 +2446,77 @@
 // 37. What are some of the advantages/disadvantages of writing JavaScript code in a language that 
 // compiles to JavaScript?
 
+// From: https://www.quora.com/What-are-some-of-the-advantages-disadvantages-of-writing-JavaScript-code-in-a-language-that-compiles-to-JavaScript
+
+
+// Advantages:
+
+// Classes. Many (most?) transpiled languages give you classes, inheritance and sometimes interfaces. 
+// The common rebuttal to this is that it’s just syntax sugar and you’ve still got JS prototypical 
+// inheritance under the hood, but that misses the point: classes are always syntax sugar. A C++ compiler 
+// isn’t generating some magic OOP machine code, it is generating standard procedural assembly code. A 
+// transpiled language is just doing the same but emitting JS instead.
+
+// Types. JS vague typing and type guessing (“inference”) is a menace with a large code base. Half the 
+// unit tests in existence are there to try and plug the inability of JS to allow you to define what 
+// you mean. Most transpiled languages fix this to one degree or another thereby giving you a lot of 
+// your test suite by default and eliminating bugs before they happen. This is really why TypeScript exists.
+
+// Features: JS evolves quite slowly in terms of browser implementation. If you want to use ES6 features 
+// you need to transpile to ES5 anyway. TypeScript 2 is probably ES7+ in many ways. Other languages bring 
+// other features.
+
+
+// Disadvantages:
+
+// You’ll probably need webpack or gulp to automate all your transpiling and bundling.
+
+// The number of developers familiar with what you are doing is smaller.
+
+// Can’t think of another one offhand.
+// Personally I use TypeScript for virtually everything. Occassionally ES6. I haven’t written regular 
+// ES5 for so long that I can’t even remember exactly what features are missing. The only time I see 
+// it is as Babel output.
+
+
+
+
+// From: http://khaidoan.wikidot.com/javascript-advantage-of-transpilers
+
+
+// // Advantages/disadvantages of writing JavaScript code in a language that 
+// // compiles to JavaScript:
+
+// The TypeScript compiler considers regular JavaScript code to be completely valid; 
+// but adds new features such as type annotations, classes and interfaces. All of 
+// that is stripped out at compile time to generate readable code, ready to be used 
+// on the browser. Some of those added features are planned for the next version of 
+// ECMAScript and the TypeScript team is trying to implement them in a way that 
+// respects the future standard. As web browsers progress in their support for 
+// ECMAScript 6, we may see TypeScript’s implementation fade out in favor of the 
+// standard.
+
+// JavaScript supersets are particularly interesting to those who are already 
+// familiar and comfortable with that language. They don’t try to hide JavaScript; 
+// but merely add syntactic sugar in the form of new keywords and constructs. As a 
+// result, it’s fairly easy to look at the compiled code and relate it to the 
+// original source, which eases debugging.
+
+// Other developers think that JavaScript is beyond fixing; but since there is no 
+// other choice right now, they’ll put up with it by hiding it behind a new 
+// language, one which suits them best. The motivations are varied and consequently 
+// the proposed solutions are varied as well.
+
+// It seems that one of the main motivations behind it is to get rid of JavaScript’s 
+// C-like syntax; some people apparently dislike curly braces and semicolons very 
+// much. From what I’ve read, CoffeeScript is inspired by Ruby, Python and Haskell.
+
+// So, if CoffeeScript or TypeScript ease your pain points, use it.  See
+// http://buildnewgames.com/compiling-to-javascript/ for more details.
+
+
+
+
 
 
 
@@ -2568,7 +2661,214 @@
 // 50. Can you offer a use case for the new arrow => function syntax? How does this new syntax differ from other functions?
 
 
+// There are big differences between arrow functions and classic function expressions. They’re more powerful in some situations, 
+// but terrible in others.
+// JavaScript arrow functions were introduced in ES2015. They are a more succinct way of writing functions. For example, 
+// foo and bar do the same thing:
 
+// let foo = function() {
+//   console.log('BAZ')
+// }
+// let bar = () => {
+//   console.log('BAZ')
+// }
+// foo() // BAZ
+// bar() // BAZ
+// But arrow functions are not just syntactic sugar for the classic function expressions. There are some big differences of 
+// which you should be aware. These differences make arrow functions extra awesome, but they can trip you up if you’re not 
+// careful. Sometimes arrow functions won’t cut it and you’ll need to use the good old function expressions.
+
+
+// Arrow functions and this
+// In classic function expressions, the this keyword is bound to different values based on the context in which the function 
+// is called. Whereas arrow functions use the value of this in their lexical scope. This leads to very different behaviour.
+
+// What’s the difference between context and scope? The context is (roughly) the object that calls the function. And the scope 
+// is all the variables visible to a function where it is defined. One cares about how it is called, the other cares about how 
+// it is defined.
+
+// For an example of context, consider an object which which has a method defined by a function expression:
+
+// let obj = {
+//   myVar: 'foo',
+  
+//   myFunc: function() {
+//     console.log(this.myVar)
+//   }
+// }
+// obj.myFunc() // foo
+// obj is the object calling myFunc. It’s myFunc's context. So the value of this in myFunc is bound to obj. Context can be 
+// defined in different ways depending on how a function is called. For example when a constructor is called with the new 
+// keyword, it refers to the the object being created. You can read more about context on MDN.
+
+// So if this is bound to the context (i.e. bound to the object that calls a function), it can lead to some very awkward 
+// issues with callbacks. Let’s add a setTimeout to our obj.myFunc to simulate a callback:
+
+// let obj = {
+//   myVar: 'foo',
+  
+//   myFunc: function() { 
+//     console.log(this.myVar)   
+ 
+//     setTimeout(function() {
+//       console.log(this.myVar)
+//     }, 1000)
+//   }
+// }
+// obj.myFunc() // foo ... then... undefined
+// myFunc's value of this refers to obj. so logging myFunc.myVar from within that function correctly prints 'foo'. However, 
+// the second function is called by setTimeout — so its context is different. Its context is actually a Timeout object in Node 
+// or the window object in browsers. So although we probably meant for this still to refer to obj, we’ve lost our reference to it.
+
+// This requires some gymnastics to get around. One strategy is to assign this to a variable which is usually named self or 
+// that. This variable is in the lexical scope of the callback function. This means the callback function can access that 
+// variable because it was defined in its scope:
+
+// let obj = {
+//   myVar: 'foo',
+  
+//   myFunc: function() { 
+//     let self = this
+//     console.log(this.myVar)  
+  
+//     setTimeout(function() {
+//       console.log(self.myVar)
+//     }, 1000)
+//   }
+// }
+// obj.myFunc() // foo ... then... foo
+// You can also achieve this using methods such as bind, call, and apply. These are all different ways of passing in a value 
+// to be bound to the this keyword of a function.
+
+// There’s an even cleaner solution to this problem using arrow functions. Recall we said that arrow functions take their 
+// value of this from the lexical scope. That means it just uses the value of this in the surrounding code block. It doesn’t 
+// care what calls it, it just cares where it was defined. Take a look:
+
+// let obj = {
+//   myVar: 'foo',
+  
+//   myFunc: function() { 
+//     console.log(this.myVar)  
+  
+//     setTimeout(() => {
+//       console.log(this.myVar)
+//     }, 1000)
+//   }
+// }
+// obj.myFunc() // foo ... then... foo
+// So immediately we can see that arrow functions are better suited for callbacks. But what happens if we try to use an 
+// arrow function as an object method?
+
+// let obj = {
+//   myVar: 'foo',
+  
+//   myFunc: () => { 
+//     console.log(this.myVar)  
+//   }
+// }
+// obj.myFunc() // undefined
+// You might expect this to refer to obj. But arrow functions don’t bind this to the object that called them. They just use 
+// the value of this in the scope in which they were defined. In this case, that’s the global object. So arrow functions are 
+// unusable for object methods!
+
+// The takeaway: Function expressions are best for object methods. Arrow functions are best for callbacks or methods like 
+// map, reduce, or forEach.
+// You can read more about scopes on MDN. On a fundamental level, arrow functions are simply incapable of binding a value 
+// of this different from the value of this in their scope. So the methods bind, call, and apply will have no effect on them.
+
+
+// Constructors
+// There’s another way arrow functions don’t work well with objects. They can’t be constructors. The classic function 
+// expressions can be used to construct a new object like so:
+
+// let Person = function(name, height) {
+//   this.name = name
+//   this.height = height
+// }
+// Person.prototype.hello = function() {
+//   console.log('Hi, my name is ' + this.name)
+// }
+// let alice = new Person('Alice', 1.7)
+// alice.hello() // Hi, my name is Alice
+// But arrow functions do not have a prototype property and they cannot be used with new.
+
+// Binding arguments
+// We’ve seen how arrow functions don’t bind a this and they just use the value of this in their scope. Arrow functions also 
+// don’t bind an arguments object. With function expressions, you can do this:
+
+// let sum = function() {
+//   let args = Array.from(arguments) // arguments is available
+//   return args.reduce((a, b) => a + b, 0)
+// }
+// sum(1, 2, 3) // 6
+// Arrow functions don’t have an arguments object. But the same functionality can be achieved using rest parameters:
+
+// let sum4 = (...args) => {
+//   return args.reduce((a, b) => a + b, 0)
+// }
+// sum(1, 2, 3) // 6
+// Implicitly returning values
+// We can make the function above even more concise with arrow functions. Using the concise form, we don’t have to wrap our 
+// code in a block. We can just define an expression and the arrow function will automatically return its value:
+
+// let sum = (...args) => args.reduce((a, b) => a + b, 0)
+// On top of this, we can return object literals by wrapping them in parentheses:
+
+// let getObj = () => ({ foo: 'hello', bar: 'world' })
+// This concise syntax makes arrow functions even better for defining small and easily readable callbacks.
+
+// Summary
+// So arrow functions are quite different from the old function expressions. They have some nice properties which allow them to 
+// work well as callback functions… but they suck as object methods and can’t be used as constructors. There are a few other 
+// differences. For example, arrow functions can’t be generators. I encourage you to check out the details on MDN. Happy hacking!
+
+
+
+
+
+
+
+
+// The takeaway: Function expressions are best for object methods. Arrow functions are best for callbacks or methods 
+// like map, reduce, or forEach.
+
+
+// On a fundamental level, arrow functions are simply incapable of binding a value of this different from the value of this 
+// in their scope. So the methods bind, call, and apply will have no effect on them.
+
+
+// Arrow functions take their value of this from the lexical scope. 
+
+// It (arrow functions) doesn’t care what calls it, it just cares where it was defined.
+
+// Because the context of 'this' changes with normal function declaration based on how the function is called
+
+// Good: 
+
+// let obj = {
+//   myVar: 'foo',
+  
+//   myFunc: function() { 
+//     console.log(this.myVar)  
+  
+//     setTimeout(() => {
+//       console.log(this.myVar)
+//     }, 1000)
+//   }
+// }
+// obj.myFunc() // foo ... then... foo
+
+
+// Bad:
+
+// let obj = {
+//   myVar: 'foo',
+  
+//   myFunc: () => { 
+//     console.log(this.myVar)  
+//   }
+// }
+// obj.myFunc() // undefined
 
 
 
@@ -2576,8 +2876,39 @@
 
 // 51. What advantage is there for using the arrow syntax for a method in a constructor?
 
+// Arrow functions take their value of this from the lexical scope. 
+
+// It (arrow functions) doesn’t care what calls it, it just cares where it was defined.
+
+// So where you would normally have to define a 'that' or 'self' or use call, apply, or bind - it just works properly
 
 
+// Good: 
+
+// let obj = {
+//   myVar: 'foo',
+  
+//   myFunc: function() { 
+//     console.log(this.myVar)  
+  
+//     setTimeout(() => {
+//       console.log(this.myVar)
+//     }, 1000)
+//   }
+// }
+// obj.myFunc() // foo ... then... foo
+
+
+// Bad:
+
+// let obj = {
+//   myVar: 'foo',
+  
+//   myFunc: () => { 
+//     console.log(this.myVar)  
+//   }
+// }
+// obj.myFunc() // undefined
 
 
 
