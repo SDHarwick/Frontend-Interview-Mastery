@@ -960,6 +960,205 @@ W EMCA6 it don matta
 
 // 17. Explain Ajax in as much detail as possible.
 
+// From: https://medium.com/@morgan_ashley/front-end-developer-interview-question-03-4b8c94a42442
+
+// What is AJAX?
+// Simply put, AJAX is the use of JavaScript to send and receive using HTTP without reloading the 
+// page. AJAX is an acronym for asynchronous JavaScript and XML, and is used as a technique for 
+// creating client-side asynchronous web applications. AJAX is considered a group of technologies. 
+// HTML and CSS can be used in combination to mark up and style information. JavaScript and the 
+// XMLHttpRequest object provide the method for exchanging data asynchronously between the browser 
+// and the server.
+
+// What is AJAX used for, and what companies use it?
+// Login forms — digg.com
+// Auto-complete with the search bar — google.com
+// Voting and rating content — reddit.com
+// Updating user content — twitter.com
+
+// Why do developers use AJAX?
+// AJAX provides more efficient and smoother running applications, which gives users better 
+// interactive experiences.
+
+// How does AJAX work?
+// AJAX, sends and retrieves data from a server asynchronously. This enables the web application 
+// to continue running and dynamically display. It allows the user to interact with the information 
+// presented on the page, avoiding full page reloads.
+
+// The image below shows the process the execution of AJAX.
+
+// 1. A user interaction in the browser triggers the event, such as a button click
+
+// 2. The AJAX call fires. This creates and AJAX request, browsers use the XMLHttpRequest object. When 
+// the server responds to the browser’s request, the same XMLHttpRequest object will process the result.
+
+// 3. The server-side script receives the input from JavaScript, and processes the data.
+
+// 4. After the data is processed, the script sends the data back to the original client-side page that 
+// made the request via XML
+
+// 5. Once the data is received, a second JavaScript callback function, is called this function captures 
+// the data, and updates the web page accordingly.
+
+
+// Browser     									   		 Javascript   														Server   
+// ------------                    ---------------------     	             ----------------                    
+// |	an event  | ============>	    | obtain XML object,|	 	============>	  | Handle Reqest	|			          
+// |	occurs		| 	DOM Event       | set callback, send|		XML Req. Object | Respond      	|			          
+// ------------   				          --------------------- 			             ----------------   
+//             									              																 ||
+// Browser     								  	 Javascript      														 ||
+// ------------               -------------------                  				     ||                   
+// |	New data	| <=========   | parse response  |  <============================|| 			          
+// |	or... 		| Updated page | update DHTML	   |       Response  			          
+// ------------   				     -------------------                       
+// ^
+// Presentation shown
+
+
+// Note: Newer technologies have slowly been replacing the XML in AJAX with JSON. The reason being, 
+// XML is a lot stricter than HTML, thus having larger file sizes, and harder to extract the data 
+// that is returned. JSON is less verbose, has proven to be more efficient, and working with data 
+// is much easier.
+
+
+
+// //   This is just a simple AJAX example.
+// //   credits to developer.mozilla.org for sample code.
+// //   comments are explained by me. :-p
+
+
+// <span id="ajaxButton" style="cursor: pointer; text-decoration: underline">
+//   Make a request
+// </span>
+
+// <script type="text/javascript">
+  
+//     // here, we are using an IIFE to wrap our code so our
+//     // variables and closures doesn't pollute the global namespace
+  
+//   (function() {
+//     var httpRequest;
+
+    
+//       // this is an event handler,
+//       // once user clicked on ajaxButton html element,
+//       // it will execute the onclick function and call the
+//       // makeRequest function with a given 'test.html' value on its parameter.
+//       // the 'test.html' url is just a sample api url which we'll be
+//       // making a request from a server and expect a server response.
+    
+//     document.getElementById("ajaxButton").onclick = function() {
+//       makeRequest('test.html');
+//     };
+
+    
+//       // MAKING AN HTTP REQUEST
+    
+//     function makeRequest(url) {
+      
+//         // as mentioned above, we need to instantiate a new class 
+//         // of XMLHttpRequest so we can make a HTTP request to the server.
+//         // we are assigning this class to a variable defined on our
+//         // outer scope so its accessible throughout our IIFE scope.
+      
+//       httpRequest = new XMLHttpRequest();
+
+      
+//         // were doing a Feature Detection here.
+//         // as the name implies, we are just checking if
+//         // XMLHttpRequest host object is NOT available and
+//         // setting an alert action to notify user if
+//         // XMLHttpRequest is not available on their browser/environment.
+      
+//       if (!httpRequest) {
+//         alert('Giving up :( Cannot create an XMLHTTP instance');
+//         return false;
+//       }
+
+      
+//         // before sending our HTTP server request,
+//         // we need to set a handler for our server response.
+//         // We can do this by assigning a function to our
+//         // XMLHttpRequest object property 'onreadystatechange'.
+//         // Or
+//         // We can also assign an anonymous function, so 'onreadystatechange'
+//         // doesn't need to carry a reference to a function.
+//         // But for organization, we will just use the former method.
+      
+//       httpRequest.onreadystatechange = alertContents;
+
+      
+//         // Now that we have set our request server response handler,
+//         // we'll need to make the request.
+//         // - 1st parameter, is the HTTP request method (GET, POST, DELETE, etc).
+//         //   There are other request methods, whichever our server supports.
+//         //   It's also good practice to define these request methods
+//         //   in capital letters as per the HTTP standard or there are browsers
+//         //   (Firefox) that may not be able to process the request.
+//         // - 2nd parameter, is the url for the data we are requesting.
+//         //   Make sure to use the exact domain name or it will throw a 'Permission Denied' error.
+//         //   For security purpose, we cannot make a 3rd party request, if needed,
+//         //   this is a CORS issue,
+//         //   ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+//         // - 3rd parameter, just sets whether the request is asynchronous. This is
+//         //   optional and default is set to true.
+      
+//       httpRequest.open('GET', url);
+
+      
+//         // As the method name implies, this HTTP request object method opens/sends the request.
+//         // If we are simply doing a 'GET' request, we can leave the parameter empty, but
+//         // if we are 'POST'ing data, we can pass in a value formatted in either
+//         // query string, JSON, SOAP, etc.
+      
+//       httpRequest.send();
+
+      
+//         // NOTE:
+//         // If we want to POST data, we may need to set the MIME type of the request.
+//         // Ex: httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      
+//     }
+
+    
+//       // HANDLING THE SERVER RESPONSE
+    
+    
+//       // this is the same function declaration we've assigned to 
+//       // 'onreadystatechange' object property above.
+    
+//     function alertContents() {
+      
+//         // this if statement checks for the state of the request.
+//         // if the 'readyState' has a value of XMLHttpRequest.DONE (evaluating to 4),
+//         // it means the server response has been received and its OK for us to continue processing.
+//         // ref: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest#Properties
+      
+//       if (httpRequest.readyState === XMLHttpRequest.DONE) {
+        
+//           // Next, we'll check for HTTP Status Code. Most common HTTP Status Codes I've
+//           // encountered are 200 OK, 403 Forbidden Error, and 500 Server Error.
+//           // There is a list of HTTP Status Code available online with description of code.
+//           // This if statement is just checking for which HTTP Status Code to respond to and
+//           // execute code for whatever we want to do with the data.
+        
+//         if (httpRequest.status === 200) {
+//           alert(httpRequest.responseText);
+//         } else {
+//           alert('There was a problem with the request.');
+//         }
+
+        
+//           // There are 2 options to access data: httpRequest.responseText and httpRequest.responseXML
+//           // Step above is only valid if asynchronous is set to true, if not, we don't need to specify
+//           // a function.
+        
+//       }
+//     }
+//   })();
+// </script>
+
 
 
 
@@ -970,6 +1169,101 @@ W EMCA6 it don matta
 
 
 // 18. What are the advantages and disadvantages of using Ajax?
+
+
+// Advantages
+// Better interactivity
+// This is pretty much the most striking benefit behind why several developers and webmasters are 
+// switching to AJAX for their websites. AJAX allows easier and quicker interaction between user 
+// and website as pages are not reloaded for content to be displayed. 
+
+// Easier navigation
+// AJAX applications on websites can be built to allow easier navigation to users in comparison to 
+// using the traditional back and forward button on a browser.
+
+// Compact
+// With AJAX, several multi purpose applications and features can be handled using a single web page, 
+// avoiding the need for clutter with several web pages. For our use of AJAX on goedkope-zomervakantie.com, 
+// it took just a few lines of code!
+
+// Backed by reputed brands
+// Another assuring reason to use AJAX on your websites is the fact that several complex web applications 
+// are handled using AJAX, Google Maps is the most impressive and obvious example, other powerful, popular 
+// scripts such as the vBulletin forum software has also incorporated AJAX into their latest version.
+
+
+// Disadvantages
+// The back and refresh button are rendered useless
+// With AJAX, as all functions are loaded on a dynamic page without the page being reloaded or more 
+// importantly a URL being changed (except for a hash symbol maybe), clicking the back or refresh 
+// button would take you to an entirely different web page or to the beginning of what your dynamic 
+// web page was processing. This is the main drawback behind AJAX but fortunately with good programming 
+// skills this issue can be fixed.
+
+// It is built on javascript
+// While javascript is secure and has been heavily used by websites for a long period of time, a 
+// percentage of website surfers prefer to turn javascript functionality off on their browser 
+// rendering the AJAX application useless, a work around to this con is present as well, where the 
+// developer will need to code a parallel non-javascript version of the dynamic web page to cater 
+// to these users.
+
+
+
+
+
+// Pros of Using AJAX
+// Improved User Experience — The enriched user experience provided by AJAX is the foremost benefit. 
+// AJAX allows webpages to update serially by exchanging a small amount of data with the server. This 
+// way it is possible to update parts of a webpage, without reloading the whole page. Classic webpages 
+// must reload the entire page and are cumbersome. AJAX increases the browser’s performance and 
+// facilitates faster browsing speed thereby providing a responsive user experience.
+
+// Enhanced User Productivity — The AJAX library provides object-oriented helper functions that 
+// dramatically increase the productivity while decreasing frustration. In addition, a well-configured 
+// ASP.NET application has its own data access layer and business layer. Finally, the “robust” ASP.NET 
+// application includes a UI layer where server side operations are performed. If you already have 
+// included these features, AJAX only needs an extra layer of AJAX-specific services and some 
+// enrichment on client features. This way the deployment cost is reduced and the productivity of the 
+// user can be enhanced. Popular websites like Amazon, Google, Yahoo, etc. also incorporate AJAX in 
+// their development.
+
+// Reduced Bandwidth Usage and Increased speed — AJAX uses client-side scripting to communicate with 
+// the web server and exchange data using JavaScript. Using AJAX, you can cut down on network load 
+// and bandwidth usage and retrieve only the data that is required to give you faster interfaces and 
+// better responsive times. Response time is faster, hence performance and speed are increased.
+
+// Increased Compatibility — AJAX can be compatible with ASP.NET, J2EE, PHP, or any languages. It 
+// almost supports all popular browsers such as Internet Explorer 5 and above, Mozilla Firefox 1.0 
+// and above, Apple Safari 1.2 and above, Opera 7.6 and above, and RockMelt.
+
+// Supports Asynchronous Processing — Asynchronous data retrieval can be done by using XmlHttpRequest, 
+// the backbone of AJAX applications. Hence, requests are handled effectively and dynamic content 
+// loading is brought to higher heights by improving the performance considerably.
+
+// Reduced server hits and network load — Atlas, an older form of Microsoft AJAX library, is a 
+// framework that integrates the Client-side JavaScript library and is easily available and can 
+// be used with ASP.NET to develop Ajax applications. It has cross-browser support and exposes 
+// object-oriented APIs, which can be used to develop web applications that minimize server 
+// hit/network load and perform asynchronous processing.
+
+// Easier Navigation — AJAX applications can be built to allow easy transition between WebPages 
+// to the users instead of using conventional back and forward buttons on a browser.
+
+// Cons of Using AJAX
+// Browser Incompatibility — AJAX highly depends on JavaScript which is implemented differently 
+// for various browsers. This turns out to be a hurdle especially when AJAX has to work across 
+// many browsers. Browsers which do not support JavaScript or have the JavaScript option disabled 
+// will not be able to use its functionality. Due to the AJAX’s dependency on JavaScript, it is not 
+// suitable for designing mobile applications. The Back button of your web browser does not work as expected.
+
+// Insecurity — The webpage can be difficult to debug, increases the code size of your webpage, 
+// and makes your webpage prone to severe security threats.
+
+// Increased load on Web Server — The load can be increased depending on the user if you are 
+// adding an auto-update type that hits the server every few seconds.
+
+
+
 
 
 
