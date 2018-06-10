@@ -1,5 +1,7 @@
 // 1. Explain event delegation
 
+// From: https://davidwalsh.name/event-delegate
+
 // One of the hot methodologies in the JavaScript world is event delegation, and for good reason.  
 // Event delegation allows you to avoid adding event listeners to specific nodes; 
 //  instead, the event listener is added to one parent.  That event listener analyzes bubbled events 
@@ -552,6 +554,7 @@
 
 // 7. How would you go about checking for any of these states?
 
+// From: https://gist.github.com/andersr/8693b5e393e0b59f8ec27576820a0aa0
 
 //  7a. Undefined
 
@@ -590,6 +593,8 @@
 
 
 // 8. What is a closure, and how/why would you use one?
+
+// From: https://medium.com/@rlynjb/js-interview-question-what-is-a-closure-and-how-why-would-you-use-one-b6fd45ea95f6
 
 // Closures are inner functions inside of an outer function. They have their own local scope and has access to outer function’s scope, parameters (but NOT arguments object), and they also have access to global variables.
 
@@ -665,6 +670,8 @@
 
 // 9. Can you describe the main difference between a `forEach` loop and a `.map()`` loop and why you would pick one versus the other?
 
+
+// From: https://codeburst.io/javascript-map-vs-foreach-f38111822c0f
 
 // If you’ve worked with JavaScript for a little while, you’ve probably come across two seemingly similar Array methods: Array.prototype.map() and Array.prototype.forEach().
 
@@ -753,6 +760,7 @@
 
 // 10. What's a typical use case for anonymous functions?
 
+// From: https://medium.com/@rlynjb/js-interview-question-what-s-a-typical-use-case-for-anonymous-functions-54cf547b2a0e
 
 // Since Anonymous Functions are function expressions rather than the regular function declaration 
 // which are statements. Function expressions are more flexible. We can assign functions to variables, 
@@ -810,6 +818,8 @@
 
 
 // 12. What's the difference between host objects and native objects?
+
+// From: https://medium.com/@rlynjb/js-interview-question-what-s-the-difference-between-host-objects-and-native-objects-b395f7c5fbf1
 
 // From what I understand, objects are divided from which environment and language they are supplied: 
 // Host Objects and Native Objects.
@@ -1006,6 +1016,8 @@
 
 // 14. What's the difference between `.call` and `.apply`?
 
+// From: http://hangar.runway7.net/javascript/difference-call-apply
+
 
 // One very common thing that trips me up when writing Javascript is knowing when to use call 
 // and when to use apply. If you're wondering what these methods are, or don't know how scope 
@@ -1093,6 +1105,8 @@
 
 
 // 15. Explain `Function.prototype.bind`.
+
+// Function.prototype.bind is used to set 'this' explicitly. It returns a function with given this context that can be called later.
 
 
 
@@ -1668,6 +1682,9 @@
 // 20. Have you ever used JavaScript templating?
 
 
+// Handlebars, Underscore, Mustache, Jade are all libraries used for the same thing.
+
+
 
 
 
@@ -1675,6 +1692,10 @@
 
 
 // If so, what libraries have you used?
+
+
+// I have used Handlebars and Underscore
+
 
 
 
@@ -1686,6 +1707,8 @@
 
 
 // 21. Explain "hoisting".
+
+// From: http://lucybain.com/blog/2014/hoisting/
 
 // Hoisting is when a JS declaration is lifted (“hoisted”) to the top of it’s scope by the JS 
 // interpreter. What this really means is that a variable or function isn’t necessarily declared 
@@ -1855,8 +1878,29 @@
 
 // 22. Describe event bubbling.
 
+// Event bubbling and capturing are two ways of event propagation in the HTML DOM API, when an event occurs in an element 
+// inside another element, and both elements have registered a handle for that event. The event propagation mode determines 
+// in which order the elements receive the event. With bubbling, the event is first captured and handled by the innermost 
+// element and then propagated to outer elements. With capturing, the event is first captured by the outermost element and 
+// propagated to the inner elements.
+
+// https://stackoverflow.com/questions/4616694/what-is-event-bubbling-and-capturing
 
 
+// Example
+// <div>
+//     <ul>
+//         <li></li>
+//     </ul>
+// </div>
+
+// In the structure above, assume that a click event occurred in the li element.
+
+// In capturing model, the event will be handled by the div first (click event handlers in the div will fire first), then 
+// in the ul, then at the last in the target element, li.
+
+// In the bubbling model, the opposite will happen: the event will be first handled by the li, then by the ul, and at last 
+// by the div element.
 
 
 
@@ -1866,6 +1910,13 @@
 
 // 23. What's the difference between an "attribute" and a "property"?
 
+
+// Attributes are defined by HTML. Properties are defined by DOM. Some HTML attributes have 1:1 mapping onto properties.
+// id is one example of such. Some do not (e.g. the value attribute specifies the initial value of an input, but the 
+// valueproperty specifies the current value).
+
+
+// From: http://lucybain.com/blog/2014/attribute-vs-property/
 
 // What is a property?
 
@@ -2110,6 +2161,10 @@
 // `duplicate([1,2,3,4,5]); // [1,2,3,4,5,1,2,3,4,5]`
 
 
+// Array.prototype.duplicator=function()
+// {
+//  return this.concat(this);
+// }
 
 
 
@@ -2121,6 +2176,8 @@
 
 
 // 29. Why is it called a Ternary operator, what does the word "Ternary" indicate?
+
+// From: http://lucybain.com/blog/2014/js-ternary/
 
 // A unary operand accepts one parameter, e.g. `-1`, where `-` is the operand, and `1` is the parameter.
 
@@ -2399,7 +2456,9 @@
 // 33. Why would you use something like the load event? Does this event have disadvantages? Do you know any 
 // alternatives, and why would you use those?
 
-
+// The load event fires at the end of the document loading process. At this point, all of the objects in the document 
+// are in the DOM, and all the images, scripts, links and sub-frames have finished loading. To execute anything post 
+// document load, we fire these events. ‘DOMContentLoaded’ or jQuery’s loaded are another options.
 
 
 
@@ -2410,10 +2469,33 @@
 
 // 34. Explain what a single page app is and how to make one SEO-friendly.
 
+// A single-page application (SPA) is a web application or web site that fits on a single web page with the goal of providing 
+// a more fluid user experience similar to a desktop application. In a SPA, either all necessary code — HTML, JavaScript, and 
+// CSS — is retrieved with a single page load, or the appropriate resources are dynamically loaded and added to the page as 
+// necessary, usually in response to user actions.
 
 
+// From: https://stackoverflow.com/questions/20048476/how-to-improve-seo-for-single-page-application
 
+// To tackle the problem you need a few things:
 
+// Real URLs. Real <a> tags with hrefs pointing to these.
+// you can, of course, use pushState to keep the AJAX behavior
+// http://example.com/app#this_is_not_a_real_url_for_this_purpose
+// http://example.com/app/this_is_a_real_url_for_this_purpose
+// You need to have the server generate the pages prefilled with the JSON on explicit request
+// this is most easily acomplished using PhantomJS or similar.
+// if you assume content is changed less frequently than its read (i.e. most successful sites), you can use a queue to build 
+// these pages into static files
+// then tell your web server to send index.html if the requested file doesn't exist
+// For "soft requests" (they click a link, which you use JSON/AJAX to cover), it'll work as it does currently.
+
+// For hard requests (they click a link from another site, press F5, or it's Googlebot crawling your URLs), you send them 
+// the precompiled version which:
+
+// improves SEO
+// increases page load performance (which is also a SEO bonus)
+// doesn't require any difficult server processing because the page is already built
 
 
 
@@ -2433,7 +2515,9 @@
 
 // 36. What are the pros and cons of using Promises instead of callbacks?
 
-
+// It is fair to say promises are just syntactic sugar. Everything you can do with promises you can do with callbacks. 
+// The deep reason why promises are often better is that they’re more composeable, which roughly means that combining 
+// multiple promises “just works” and is more readable, while combining multiple callbacks often doesn’t and creates callback hell.
 
 
 
@@ -2445,6 +2529,9 @@
 
 // 37. What are some of the advantages/disadvantages of writing JavaScript code in a language that 
 // compiles to JavaScript?
+
+// Example: CoffeeScript. Pros/Cons: Syntactic sugar, readable code, and use of good patterns vs debugging and compilation issues.
+
 
 // From: https://www.quora.com/What-are-some-of-the-advantages-disadvantages-of-writing-JavaScript-code-in-a-language-that-compiles-to-JavaScript
 
@@ -2529,6 +2616,11 @@
 // 38. What tools and techniques do you use debugging JavaScript code?
 
 
+// Web/Browser console using console.log. Firebug, Developer Tools, stop points.
+
+
+
+
 
 
 
@@ -2538,7 +2630,7 @@
 
 // 39. What language constructions do you use for iterating over object properties and array items?
 
-
+// for loop, for..in, for each..in, map, reduce etc.
 
 
 
@@ -2552,7 +2644,8 @@
 // Mutable object - The object is subject to be changed/altered.
 // Immutable object - The object cannot be changed once created.
 
-
+// Mutable objects are those whose state is allowed to change over time. An immutable value is the exact opposite — 
+// after it has been created, it can never change. Strings and Numbers are inherently immutable in javascript.
 
 
 
@@ -2561,7 +2654,7 @@
 
 // 41. What is an example of an immutable object in JavaScript?
 
-
+// Strings and Numbers are inherently immutable in javascript.
 
 
 
@@ -2593,6 +2686,8 @@
 
 // 44. Explain the difference between synchronous and asynchronous functions.
 
+// Synchronous: Step wise execution. Next line executed after first. Asynchronous: Execution moves to next step before 
+// first is finished. 
 
 
 
@@ -2621,6 +2716,10 @@
 
 
 // 47. Explain the differences on the usage of foo between `function foo() {}`` and `var foo = function() {}`
+
+
+//  First one is declaration defined at parse time while the other is expression defined at run time.
+
 
 
 
@@ -3037,6 +3136,9 @@
 
 
 
+// 59. When would you use document.write()?
+
+// By standard means, I hope to never use it, because it goes on and overwrites on entire document.
 
 
 
