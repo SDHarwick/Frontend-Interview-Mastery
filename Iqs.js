@@ -457,7 +457,7 @@
 
 // ==>
 
-// (function foo(){ })();
+// (function foo(){ }());
 
 
 
@@ -490,13 +490,15 @@
 // declaredVariable; // 1
 // For more discussion on undeclared variables, checkout Mozilla’s documentation.
 
-// Note: this will not work in strict mode. It will throw an error when it gets to the undeclaredVariable - see this example. Thanks to Glen Selle for his comment with this update.
+// Note: this will not work in strict mode. It will throw an error when it gets to the undeclaredVariable - 
+// see this example. Thanks to Glen Selle for his comment with this update.
 
 
 
 // Now let’s move on to undefined.
 
-// Something is undefined when it hasn’t been defined yet. If you call a variable or function without having actually created it yet the parser will give you an not defined error.
+// Something is undefined when it hasn’t been defined yet. If you call a variable or function without having 
+// actually created it yet the parser will give you an not defined error.
 
 // Example:
 
@@ -534,7 +536,8 @@
 
 // var nullVariable = null; // null
 // typeof nullVariable // "object"
-// You probably don’t often purposefully define a variable to null, but it may be the return value of a function. Often you'll need to gaurd against null values in your code.
+// You probably don’t often purposefully define a variable to null, but it may be the return value of a 
+// function. Often you'll need to gaurd against null values in your code.
 
 // You can know if a variable is null with the following:
 
@@ -596,14 +599,19 @@
 
 // From: https://medium.com/@rlynjb/js-interview-question-what-is-a-closure-and-how-why-would-you-use-one-b6fd45ea95f6
 
-// Closures are inner functions inside of an outer function. They have their own local scope and has access to outer function’s scope, parameters (but NOT arguments object), and they also have access to global variables.
+// Closures are inner functions inside of an outer function. They have their own local scope and has access to 
+// outer function’s scope, parameters (but NOT arguments object), and they also have access to global variables.
 
-// From what I understand, Closures is a neat way to deal with scope issues. Reasons we use Closures is because Javascript is a function-level scope rather than as with other languages, block-level scope and Javascript is an asynchronous/event driven language. Example that Closure is frequently used is jQuery (ex. click()).
+// From what I understand, Closures is a neat way to deal with scope issues. Reasons we use Closures is because 
+// Javascript is a function-level scope rather than as with other languages, block-level scope and Javascript is 
+// an asynchronous/event driven language. Example that Closure is frequently used is jQuery (ex. click()).
 
 // This is how Closures work. 
 // 1. After its outer function has been executed and has returned a value, closures can still run.
-// 2. Closures store references to the outer function’s variable, hence, we will always have access to the updated values of outer function’s variables.
-// 3. Since we have access to the updated values of outer function’s variables. We will have issue/bugs when a variable changes via for loop, but this can be fixed by using IIFE, Immediately Invoked Function Expression.
+// 2. Closures store references to the outer function’s variable, hence, we will always have access to the 
+// updated values of outer function’s variables.
+// 3. Since we have access to the updated values of outer function’s variables. We will have issue/bugs when 
+// a variable changes via for loop, but this can be fixed by using IIFE, Immediately Invoked Function Expression.
 
 // Below is a sample code of using Closure with IIFE.
 
@@ -653,7 +661,8 @@
 // }
 
 // // Now lets test it!
-// var createIDforBlogPost = generateBlogPostID(blogPost); // hope variable names is pretty self-explanatory on what i am doing here
+// var createIDforBlogPost = generateBlogPostID(blogPost); // hope variable names is pretty self-explanatory 
+// on what i am doing here
 
 // var blog0 = createIDforBlogPost[0];
 // console.log(blog0.id);
@@ -673,7 +682,8 @@
 
 // From: https://codeburst.io/javascript-map-vs-foreach-f38111822c0f
 
-// If you’ve worked with JavaScript for a little while, you’ve probably come across two seemingly similar Array methods: Array.prototype.map() and Array.prototype.forEach().
+// If you’ve worked with JavaScript for a little while, you’ve probably come across two seemingly similar Array 
+// methods: Array.prototype.map() and Array.prototype.forEach().
 
 // So, what’s the difference?
 
@@ -684,9 +694,11 @@
 // map() — creates a new array with the results of calling a provided function on every element in the calling array.
 // What exactly does this mean?
 
-// Well, the forEach() method doesn’t actually return anything (undefined). It simply calls a provided function on each element in your array. This callback is allowed to mutate the calling array.
+// Well, the forEach() method doesn’t actually return anything (undefined). It simply calls a provided function on 
+// each element in your array. This callback is allowed to mutate the calling array.
 
-// Meanwhile, the map() method will also call a provided function on every element in the array. The difference is that map() utilizes return values and actually returns a new Array of the same size.
+// Meanwhile, the map() method will also call a provided function on every element in the array. The difference 
+// is that map() utilizes return values and actually returns a new Array of the same size.
 
 // Code Examples
 // Consider the below array. If we wanted to double each element in the array, we could use either map or forEach.
@@ -716,18 +728,21 @@
 // Here are the results of my forEach() vs map() test:
 
 
-// forEach() was more than 70% slower than map(). Your browser is probably different. You can check out the full test results here:
+// forEach() was more than 70% slower than map(). Your browser is probably different. You can check out the 
+// full test results here:
 
 
 // Functional Considerations
 // It’s important to also understand that using map() may be preferable if you favor functional programming.
 
-// This is because forEach() affects and changes our original Array, whereas map() returns an entirely new Array — thus leaving the original array unchanged.
+// This is because forEach() affects and changes our original Array, whereas map() returns an entirely new 
+// Array — thus leaving the original array unchanged.
 
 // Which is better?
 // That depends on what you’re trying to accomplish.
 
-// forEach() may be preferable when you’re not trying to change the data in your array, but instead want to just do something with it — like saving it to a database or logging it out:
+// forEach() may be preferable when you’re not trying to change the data in your array, but instead want to 
+// just do something with it — like saving it to a database or logging it out:
 
 // let arr = ['a', 'b', 'c', 'd'];
 // arr.forEach((letter) => {
@@ -737,7 +752,8 @@
 // // b
 // // c
 // // d
-// And map() might be preferable when changing or altering data. Not only is it faster but it returns a new Array. This means we can do cool things like chaining on other methods ( map(), filter(), reduce(), etc.)
+// And map() might be preferable when changing or altering data. Not only is it faster but it returns a new 
+// Array. This means we can do cool things like chaining on other methods ( map(), filter(), reduce(), etc.)
 
 // let arr = [1, 2, 3, 4, 5];
 // let arr2 = arr.map(num => num * 2).filter(num => num > 5);
@@ -3139,6 +3155,86 @@
 // 59. When would you use document.write()?
 
 // By standard means, I hope to never use it, because it goes on and overwrites on entire document.
+
+
+
+
+
+
+
+
+
+// Coding Questions
+// Question: What is the value of foo?
+// var foo = 10 + '20';
+// Answer: '1020', because of type coercion from Number to String
+
+// Question: How would you make this work?
+// add(2, 5); // 7
+// add(2)(5); // 7
+// Answer: A general solution for any number of parameters
+
+// 'use strict';
+
+// let sum = (arr) => arr.reduce((a, b) => a + b);
+// let addGenerator = (numArgs, prevArgs) => {
+//   return function () {
+//     let totalArgs = prevArgs.concat(Array.from(arguments));
+//     if (totalArgs.length === numArgs) {
+//       return sum(totalArgs);
+//     }
+//     return addGenerator(numArgs, totalArgs);
+//   };
+// };
+
+// let add = addGenerator(2, []);
+
+// add(2, 5); // 7
+// add(2)(5); // 7
+// add()(2, 5); // 7
+// add()(2)(5); // 7
+// add()()(2)(5); // 7
+// Question: What value is returned from the following statement?
+// "i'm a lasagna hog".split("").reverse().join("");
+// Answer: It's actually a reverse method for a string - 'goh angasal a m\'i'
+
+// Question: What is the value of window.foo?
+// ( window.foo || ( window.foo = "bar" ) );
+// Answer: Always 'bar'
+
+// Question: What is the outcome of the two alerts below?
+// var foo = "Hello";
+// (function() {
+//   var bar = " World";
+//   alert(foo + bar);
+// })();
+// alert(foo + bar);
+// Answer:
+
+// First: Hello World
+// Second: Throws an exception, ReferenceError: bar is not defined
+// Question: What is the value of foo.length?
+// var foo = [];
+// foo.push(1);
+// foo.push(2);
+// Answer: .push is mutable - 2
+
+// Question: What is the value of foo.x?
+// var foo = {n: 1};
+// var bar = foo;
+// foo.x = foo = {n: 2};
+// Answer: undefined. Rather, bar.x is {n: 2}.
+
+// foo.x = foo = {n: 2} is the same as foo.x = (foo = {n: 2}). It is because a left term is first referenced and then a right term is evaluated when an assignment is performed in JavaScript. When foo.x is referenced, it refers to an original object, {n: 1}. So, when the result of the right term, {n: 2}, is evaluated, it will assigned to the original object, which is at the moment referenced by bar.
+
+// Question: What does the following code print?
+// console.log('one');
+// setTimeout(function() {
+//   console.log('two');
+// }, 0);
+// console.log('three');
+// Answer: one, three and two. It's because console.log('two'); will be invoked in the next event loop.
+
 
 
 
