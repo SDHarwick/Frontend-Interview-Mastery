@@ -1,5 +1,7 @@
 // 1. Explain event delegation
 
+// From: https://davidwalsh.name/event-delegate
+
 // One of the hot methodologies in the JavaScript world is event delegation, and for good reason.  
 // Event delegation allows you to avoid adding event listeners to specific nodes; 
 //  instead, the event listener is added to one parent.  That event listener analyzes bubbled events 
@@ -455,7 +457,7 @@
 
 // ==>
 
-// (function foo(){ })();
+// (function foo(){ }());
 
 
 
@@ -488,13 +490,15 @@
 // declaredVariable; // 1
 // For more discussion on undeclared variables, checkout Mozilla’s documentation.
 
-// Note: this will not work in strict mode. It will throw an error when it gets to the undeclaredVariable - see this example. Thanks to Glen Selle for his comment with this update.
+// Note: this will not work in strict mode. It will throw an error when it gets to the undeclaredVariable - 
+// see this example. Thanks to Glen Selle for his comment with this update.
 
 
 
 // Now let’s move on to undefined.
 
-// Something is undefined when it hasn’t been defined yet. If you call a variable or function without having actually created it yet the parser will give you an not defined error.
+// Something is undefined when it hasn’t been defined yet. If you call a variable or function without having 
+// actually created it yet the parser will give you an not defined error.
 
 // Example:
 
@@ -532,7 +536,8 @@
 
 // var nullVariable = null; // null
 // typeof nullVariable // "object"
-// You probably don’t often purposefully define a variable to null, but it may be the return value of a function. Often you'll need to gaurd against null values in your code.
+// You probably don’t often purposefully define a variable to null, but it may be the return value of a 
+// function. Often you'll need to gaurd against null values in your code.
 
 // You can know if a variable is null with the following:
 
@@ -552,6 +557,7 @@
 
 // 7. How would you go about checking for any of these states?
 
+// From: https://gist.github.com/andersr/8693b5e393e0b59f8ec27576820a0aa0
 
 //  7a. Undefined
 
@@ -591,14 +597,21 @@
 
 // 8. What is a closure, and how/why would you use one?
 
-// Closures are inner functions inside of an outer function. They have their own local scope and has access to outer function’s scope, parameters (but NOT arguments object), and they also have access to global variables.
+// From: https://medium.com/@rlynjb/js-interview-question-what-is-a-closure-and-how-why-would-you-use-one-b6fd45ea95f6
 
-// From what I understand, Closures is a neat way to deal with scope issues. Reasons we use Closures is because Javascript is a function-level scope rather than as with other languages, block-level scope and Javascript is an asynchronous/event driven language. Example that Closure is frequently used is jQuery (ex. click()).
+// Closures are inner functions inside of an outer function. They have their own local scope and has access to 
+// outer function’s scope, parameters (but NOT arguments object), and they also have access to global variables.
+
+// From what I understand, Closures is a neat way to deal with scope issues. Reasons we use Closures is because 
+// Javascript is a function-level scope rather than as with other languages, block-level scope and Javascript is 
+// an asynchronous/event driven language. Example that Closure is frequently used is jQuery (ex. click()).
 
 // This is how Closures work. 
 // 1. After its outer function has been executed and has returned a value, closures can still run.
-// 2. Closures store references to the outer function’s variable, hence, we will always have access to the updated values of outer function’s variables.
-// 3. Since we have access to the updated values of outer function’s variables. We will have issue/bugs when a variable changes via for loop, but this can be fixed by using IIFE, Immediately Invoked Function Expression.
+// 2. Closures store references to the outer function’s variable, hence, we will always have access to the 
+// updated values of outer function’s variables.
+// 3. Since we have access to the updated values of outer function’s variables. We will have issue/bugs when 
+// a variable changes via for loop, but this can be fixed by using IIFE, Immediately Invoked Function Expression.
 
 // Below is a sample code of using Closure with IIFE.
 
@@ -648,7 +661,8 @@
 // }
 
 // // Now lets test it!
-// var createIDforBlogPost = generateBlogPostID(blogPost); // hope variable names is pretty self-explanatory on what i am doing here
+// var createIDforBlogPost = generateBlogPostID(blogPost); // hope variable names is pretty self-explanatory 
+// on what i am doing here
 
 // var blog0 = createIDforBlogPost[0];
 // console.log(blog0.id);
@@ -666,7 +680,10 @@
 // 9. Can you describe the main difference between a `forEach` loop and a `.map()`` loop and why you would pick one versus the other?
 
 
-// If you’ve worked with JavaScript for a little while, you’ve probably come across two seemingly similar Array methods: Array.prototype.map() and Array.prototype.forEach().
+// From: https://codeburst.io/javascript-map-vs-foreach-f38111822c0f
+
+// If you’ve worked with JavaScript for a little while, you’ve probably come across two seemingly similar Array 
+// methods: Array.prototype.map() and Array.prototype.forEach().
 
 // So, what’s the difference?
 
@@ -677,9 +694,11 @@
 // map() — creates a new array with the results of calling a provided function on every element in the calling array.
 // What exactly does this mean?
 
-// Well, the forEach() method doesn’t actually return anything (undefined). It simply calls a provided function on each element in your array. This callback is allowed to mutate the calling array.
+// Well, the forEach() method doesn’t actually return anything (undefined). It simply calls a provided function on 
+// each element in your array. This callback is allowed to mutate the calling array.
 
-// Meanwhile, the map() method will also call a provided function on every element in the array. The difference is that map() utilizes return values and actually returns a new Array of the same size.
+// Meanwhile, the map() method will also call a provided function on every element in the array. The difference 
+// is that map() utilizes return values and actually returns a new Array of the same size.
 
 // Code Examples
 // Consider the below array. If we wanted to double each element in the array, we could use either map or forEach.
@@ -709,18 +728,21 @@
 // Here are the results of my forEach() vs map() test:
 
 
-// forEach() was more than 70% slower than map(). Your browser is probably different. You can check out the full test results here:
+// forEach() was more than 70% slower than map(). Your browser is probably different. You can check out the 
+// full test results here:
 
 
 // Functional Considerations
 // It’s important to also understand that using map() may be preferable if you favor functional programming.
 
-// This is because forEach() affects and changes our original Array, whereas map() returns an entirely new Array — thus leaving the original array unchanged.
+// This is because forEach() affects and changes our original Array, whereas map() returns an entirely new 
+// Array — thus leaving the original array unchanged.
 
 // Which is better?
 // That depends on what you’re trying to accomplish.
 
-// forEach() may be preferable when you’re not trying to change the data in your array, but instead want to just do something with it — like saving it to a database or logging it out:
+// forEach() may be preferable when you’re not trying to change the data in your array, but instead want to 
+// just do something with it — like saving it to a database or logging it out:
 
 // let arr = ['a', 'b', 'c', 'd'];
 // arr.forEach((letter) => {
@@ -730,7 +752,8 @@
 // // b
 // // c
 // // d
-// And map() might be preferable when changing or altering data. Not only is it faster but it returns a new Array. This means we can do cool things like chaining on other methods ( map(), filter(), reduce(), etc.)
+// And map() might be preferable when changing or altering data. Not only is it faster but it returns a new 
+// Array. This means we can do cool things like chaining on other methods ( map(), filter(), reduce(), etc.)
 
 // let arr = [1, 2, 3, 4, 5];
 // let arr2 = arr.map(num => num * 2).filter(num => num > 5);
@@ -753,6 +776,7 @@
 
 // 10. What's a typical use case for anonymous functions?
 
+// From: https://medium.com/@rlynjb/js-interview-question-what-s-a-typical-use-case-for-anonymous-functions-54cf547b2a0e
 
 // Since Anonymous Functions are function expressions rather than the regular function declaration 
 // which are statements. Function expressions are more flexible. We can assign functions to variables, 
@@ -810,6 +834,8 @@
 
 
 // 12. What's the difference between host objects and native objects?
+
+// From: https://medium.com/@rlynjb/js-interview-question-what-s-the-difference-between-host-objects-and-native-objects-b395f7c5fbf1
 
 // From what I understand, objects are divided from which environment and language they are supplied: 
 // Host Objects and Native Objects.
@@ -1006,6 +1032,8 @@
 
 // 14. What's the difference between `.call` and `.apply`?
 
+// From: http://hangar.runway7.net/javascript/difference-call-apply
+
 
 // One very common thing that trips me up when writing Javascript is knowing when to use call 
 // and when to use apply. If you're wondering what these methods are, or don't know how scope 
@@ -1093,6 +1121,8 @@
 
 
 // 15. Explain `Function.prototype.bind`.
+
+// Function.prototype.bind is used to set 'this' explicitly. It returns a function with given this context that can be called later.
 
 
 
@@ -1668,6 +1698,9 @@
 // 20. Have you ever used JavaScript templating?
 
 
+// Handlebars, Underscore, Mustache, Jade are all libraries used for the same thing.
+
+
 
 
 
@@ -1675,6 +1708,10 @@
 
 
 // If so, what libraries have you used?
+
+
+// I have used Handlebars and Underscore
+
 
 
 
@@ -1686,6 +1723,8 @@
 
 
 // 21. Explain "hoisting".
+
+// From: http://lucybain.com/blog/2014/hoisting/
 
 // Hoisting is when a JS declaration is lifted (“hoisted”) to the top of it’s scope by the JS 
 // interpreter. What this really means is that a variable or function isn’t necessarily declared 
@@ -1855,8 +1894,29 @@
 
 // 22. Describe event bubbling.
 
+// Event bubbling and capturing are two ways of event propagation in the HTML DOM API, when an event occurs in an element 
+// inside another element, and both elements have registered a handle for that event. The event propagation mode determines 
+// in which order the elements receive the event. With bubbling, the event is first captured and handled by the innermost 
+// element and then propagated to outer elements. With capturing, the event is first captured by the outermost element and 
+// propagated to the inner elements.
+
+// https://stackoverflow.com/questions/4616694/what-is-event-bubbling-and-capturing
 
 
+// Example
+// <div>
+//     <ul>
+//         <li></li>
+//     </ul>
+// </div>
+
+// In the structure above, assume that a click event occurred in the li element.
+
+// In capturing model, the event will be handled by the div first (click event handlers in the div will fire first), then 
+// in the ul, then at the last in the target element, li.
+
+// In the bubbling model, the opposite will happen: the event will be first handled by the li, then by the ul, and at last 
+// by the div element.
 
 
 
@@ -1866,6 +1926,13 @@
 
 // 23. What's the difference between an "attribute" and a "property"?
 
+
+// Attributes are defined by HTML. Properties are defined by DOM. Some HTML attributes have 1:1 mapping onto properties.
+// id is one example of such. Some do not (e.g. the value attribute specifies the initial value of an input, but the 
+// valueproperty specifies the current value).
+
+
+// From: http://lucybain.com/blog/2014/attribute-vs-property/
 
 // What is a property?
 
@@ -2110,6 +2177,10 @@
 // `duplicate([1,2,3,4,5]); // [1,2,3,4,5,1,2,3,4,5]`
 
 
+// Array.prototype.duplicator=function()
+// {
+//  return this.concat(this);
+// }
 
 
 
@@ -2121,6 +2192,8 @@
 
 
 // 29. Why is it called a Ternary operator, what does the word "Ternary" indicate?
+
+// From: http://lucybain.com/blog/2014/js-ternary/
 
 // A unary operand accepts one parameter, e.g. `-1`, where `-` is the operand, and `1` is the parameter.
 
@@ -2399,7 +2472,9 @@
 // 33. Why would you use something like the load event? Does this event have disadvantages? Do you know any 
 // alternatives, and why would you use those?
 
-
+// The load event fires at the end of the document loading process. At this point, all of the objects in the document 
+// are in the DOM, and all the images, scripts, links and sub-frames have finished loading. To execute anything post 
+// document load, we fire these events. ‘DOMContentLoaded’ or jQuery’s loaded are another options.
 
 
 
@@ -2410,10 +2485,33 @@
 
 // 34. Explain what a single page app is and how to make one SEO-friendly.
 
+// A single-page application (SPA) is a web application or web site that fits on a single web page with the goal of providing 
+// a more fluid user experience similar to a desktop application. In a SPA, either all necessary code — HTML, JavaScript, and 
+// CSS — is retrieved with a single page load, or the appropriate resources are dynamically loaded and added to the page as 
+// necessary, usually in response to user actions.
 
 
+// From: https://stackoverflow.com/questions/20048476/how-to-improve-seo-for-single-page-application
 
+// To tackle the problem you need a few things:
 
+// Real URLs. Real <a> tags with hrefs pointing to these.
+// you can, of course, use pushState to keep the AJAX behavior
+// http://example.com/app#this_is_not_a_real_url_for_this_purpose
+// http://example.com/app/this_is_a_real_url_for_this_purpose
+// You need to have the server generate the pages prefilled with the JSON on explicit request
+// this is most easily acomplished using PhantomJS or similar.
+// if you assume content is changed less frequently than its read (i.e. most successful sites), you can use a queue to build 
+// these pages into static files
+// then tell your web server to send index.html if the requested file doesn't exist
+// For "soft requests" (they click a link, which you use JSON/AJAX to cover), it'll work as it does currently.
+
+// For hard requests (they click a link from another site, press F5, or it's Googlebot crawling your URLs), you send them 
+// the precompiled version which:
+
+// improves SEO
+// increases page load performance (which is also a SEO bonus)
+// doesn't require any difficult server processing because the page is already built
 
 
 
@@ -2433,7 +2531,9 @@
 
 // 36. What are the pros and cons of using Promises instead of callbacks?
 
-
+// It is fair to say promises are just syntactic sugar. Everything you can do with promises you can do with callbacks. 
+// The deep reason why promises are often better is that they’re more composeable, which roughly means that combining 
+// multiple promises “just works” and is more readable, while combining multiple callbacks often doesn’t and creates callback hell.
 
 
 
@@ -2445,6 +2545,9 @@
 
 // 37. What are some of the advantages/disadvantages of writing JavaScript code in a language that 
 // compiles to JavaScript?
+
+// Example: CoffeeScript. Pros/Cons: Syntactic sugar, readable code, and use of good patterns vs debugging and compilation issues.
+
 
 // From: https://www.quora.com/What-are-some-of-the-advantages-disadvantages-of-writing-JavaScript-code-in-a-language-that-compiles-to-JavaScript
 
@@ -2529,6 +2632,11 @@
 // 38. What tools and techniques do you use debugging JavaScript code?
 
 
+// Web/Browser console using console.log. Firebug, Developer Tools, stop points.
+
+
+
+
 
 
 
@@ -2538,7 +2646,7 @@
 
 // 39. What language constructions do you use for iterating over object properties and array items?
 
-
+// for loop, for..in, for each..in, map, reduce etc.
 
 
 
@@ -2552,7 +2660,8 @@
 // Mutable object - The object is subject to be changed/altered.
 // Immutable object - The object cannot be changed once created.
 
-
+// Mutable objects are those whose state is allowed to change over time. An immutable value is the exact opposite — 
+// after it has been created, it can never change. Strings and Numbers are inherently immutable in javascript.
 
 
 
@@ -2561,7 +2670,7 @@
 
 // 41. What is an example of an immutable object in JavaScript?
 
-
+// Strings and Numbers are inherently immutable in javascript.
 
 
 
@@ -2593,6 +2702,8 @@
 
 // 44. Explain the difference between synchronous and asynchronous functions.
 
+// Synchronous: Step wise execution. Next line executed after first. Asynchronous: Execution moves to next step before 
+// first is finished. 
 
 
 
@@ -2621,6 +2732,10 @@
 
 
 // 47. Explain the differences on the usage of foo between `function foo() {}`` and `var foo = function() {}`
+
+
+//  First one is declaration defined at parse time while the other is expression defined at run time.
+
 
 
 
@@ -3036,6 +3151,89 @@
 
 
 
+
+// 59. When would you use document.write()?
+
+// By standard means, I hope to never use it, because it goes on and overwrites on entire document.
+
+
+
+
+
+
+
+
+
+// Coding Questions
+// Question: What is the value of foo?
+// var foo = 10 + '20';
+// Answer: '1020', because of type coercion from Number to String
+
+// Question: How would you make this work?
+// add(2, 5); // 7
+// add(2)(5); // 7
+// Answer: A general solution for any number of parameters
+
+// 'use strict';
+
+// let sum = (arr) => arr.reduce((a, b) => a + b);
+// let addGenerator = (numArgs, prevArgs) => {
+//   return function () {
+//     let totalArgs = prevArgs.concat(Array.from(arguments));
+//     if (totalArgs.length === numArgs) {
+//       return sum(totalArgs);
+//     }
+//     return addGenerator(numArgs, totalArgs);
+//   };
+// };
+
+// let add = addGenerator(2, []);
+
+// add(2, 5); // 7
+// add(2)(5); // 7
+// add()(2, 5); // 7
+// add()(2)(5); // 7
+// add()()(2)(5); // 7
+// Question: What value is returned from the following statement?
+// "i'm a lasagna hog".split("").reverse().join("");
+// Answer: It's actually a reverse method for a string - 'goh angasal a m\'i'
+
+// Question: What is the value of window.foo?
+// ( window.foo || ( window.foo = "bar" ) );
+// Answer: Always 'bar'
+
+// Question: What is the outcome of the two alerts below?
+// var foo = "Hello";
+// (function() {
+//   var bar = " World";
+//   alert(foo + bar);
+// })();
+// alert(foo + bar);
+// Answer:
+
+// First: Hello World
+// Second: Throws an exception, ReferenceError: bar is not defined
+// Question: What is the value of foo.length?
+// var foo = [];
+// foo.push(1);
+// foo.push(2);
+// Answer: .push is mutable - 2
+
+// Question: What is the value of foo.x?
+// var foo = {n: 1};
+// var bar = foo;
+// foo.x = foo = {n: 2};
+// Answer: undefined. Rather, bar.x is {n: 2}.
+
+// foo.x = foo = {n: 2} is the same as foo.x = (foo = {n: 2}). It is because a left term is first referenced and then a right term is evaluated when an assignment is performed in JavaScript. When foo.x is referenced, it refers to an original object, {n: 1}. So, when the result of the right term, {n: 2}, is evaluated, it will assigned to the original object, which is at the moment referenced by bar.
+
+// Question: What does the following code print?
+// console.log('one');
+// setTimeout(function() {
+//   console.log('two');
+// }, 0);
+// console.log('three');
+// Answer: one, three and two. It's because console.log('two'); will be invoked in the next event loop.
 
 
 
