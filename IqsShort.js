@@ -264,7 +264,7 @@ read this answer and this tutorial.
 
 What is the extent of your experience with Promises and/or their polyfills? — Read about them here.
 
-
+Async Await FTW
 
 What are the pros and cons of using Promises instead of callbacks ?— 
 It is fair to say promises are just syntactic sugar. Everything you can do with promises you can do with 
