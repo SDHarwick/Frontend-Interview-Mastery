@@ -1,3 +1,5 @@
+
+
 // 1. Explain event delegation
 
 // From: https://davidwalsh.name/event-delegate
